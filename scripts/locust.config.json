@@ -1,0 +1,7 @@
+{
+    "target": "https://www.testing.leflair.io",
+    "locusts": [
+        "WebTasks",
+        "ApiTasks"
+    ]
+}
