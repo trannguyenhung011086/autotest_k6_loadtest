@@ -13,28 +13,21 @@ import requests
 #         def my_task(self):
 #             pass
 
-menus = ["/api/menus/items/5b56d3448f0dd7c0480acd1b/consolidated",
-         "/api/menus/items/5b56d3448f0dd7c0480acd1f/consolidated",
-         "/api/menus/items/5b56d3448f0dd7c0480acd28/consolidated",
-         "/api/menus/items/5b56d3448f0dd7c0480acd32/consolidated",
-         "/api/menus/items/5b62d1008f0dd7c0480acd5b/consolidated"
-         ]
 
-
-def get_brands_sales():
+def get_brands():
     brands = []
-    sales = []
+    brand_ids = []
     result = {}
+    r = requests.get(TARGET + "/api/v2/brands")
+    r = r.json()
 
-    for menu in menus:
-        r = requests.get(TARGET + menu)
-        r = r.json()
-        for brand in r["brands"]:
-            brands.append(brand["slug"])
-        sales.append(r["featured"]["slug"])
+    for letter in r.keys():
+        for item in r[letter]:
+            brands.append(item["slug"])
+            brand_ids.append(item["id"])
 
     result["brands"] = brands
-    result["sales"] = sales
+    result["brand_ids"] = brand_ids
 
     return result
 
@@ -44,6 +37,23 @@ def get_today_sales():
     sale_ids = []
     result = {}
     r = requests.get(TARGET + "/api/v2/home/today")
+    r = r.json()
+
+    for sale in r:
+        sales.append(sale["slug"])
+        sale_ids.append(sale["id"])
+
+    result["sales"] = sales
+    result["sale_ids"] = sale_ids
+
+    return result
+
+
+def get_featured_sales():
+    sales = []
+    sale_ids = []
+    result = {}
+    r = requests.get(TARGET + "/api/v2/home/featured")
     r = r.json()
 
     for sale in r:
@@ -98,28 +108,14 @@ class WebTasks(TaskSet):
             self.client.get(category)
 
     @task
-    def view_subcategories(self):
-        subcategories = ["/vn/subcategories/thoi-trang-nu-5b56d3448f0dd7c0480acd1c",
-                         "/vn/subcategories/thoi-trang-nam-5b56d3448f0dd7c0480acd1d",
-                         "/vn/subcategories/tui-xach-5b56d3448f0dd7c0480acd20",
-                         "/vn/subcategories/giay-dep-nu-5b56d3448f0dd7c0480acd24",
-                         "/vn/subcategories/dong-ho-5b56d3448f0dd7c0480acd29",
-                         "/vn/subcategories/trang-suc-5b56d3448f0dd7c0480acd2c",
-                         "/vn/subcategories/cham-soc-toc-and-toan-than-5b56d3448f0dd7c0480acd34",
-                         "/vn/subcategories/trang-diem-and-son-mong-5b56d3448f0dd7c0480acd35",
-                         "/vn/subcategories/do-gia-dung-5b6924dcf51c82be101b3ef1"]
-        for subcategory in subcategories:
-            self.client.get(subcategory)
-
-    @task
     def view_brands(self):
-        brands = get_brands_sales()["brands"]
+        brands = get_brands()["brands"]
         for brand in brands:
             self.client.get("/vn/brands/" + brand)
 
     @task
     def view_featured_sales(self):
-        sales = get_brands_sales()["sales"]
+        sales = get_featured_sales()["sales"]
         for sale in sales:
             self.client.get("/vn/sales/" + sale)
 
@@ -142,14 +138,6 @@ class WebTasks(TaskSet):
             products = get_sales_products(sale_id)
             for product in products:
                 self.client.get("/vn/products/" + product)
-
-    @task
-    def view_login(self):
-        self.client.get("/vn/auth/signin")
-
-    @task
-    def view_register(self):
-        self.client.get("/vn/auth/register")
 
 
 class ApiTasks(TaskSet):
@@ -186,11 +174,6 @@ class ApiTasks(TaskSet):
     def check_voucher_invalid(self):
         response = self.client.get("/api/v2/vouchers/vouchercode")
         logging.info(response.text)
-
-    @task
-    def view_consolidated_menus(self):
-        for menu in menus:
-            self.client.get(menu)
 
 
 class WebTest(HttpLocust):

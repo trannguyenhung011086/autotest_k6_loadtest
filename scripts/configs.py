@@ -6,4 +6,4 @@ USER_CREDENTIALS = [
     ("LocustPerformanceUser1@gmail.com", "123456789")
 ]
 
-TARGET = "https://www.testing.leflair.io"
+TARGET = "https://www.staging.leflair.io"
