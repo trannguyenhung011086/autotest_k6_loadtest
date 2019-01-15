@@ -7,7 +7,7 @@ export let options = {
     duration: '30s'
 }
 
-const users = JSON.parse(open('../users.json'))
+const users = JSON.parse(open('../common/users.json'))
 
 export default function () {
     for (let i = 0; i < users.length; i++) {

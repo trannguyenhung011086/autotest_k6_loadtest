@@ -1,15 +1,14 @@
-# Load test with Locust
-- pip3 install locustio
+# Load test with k6
+- install https://docs.k6.io/docs/installation
+- run `k6 run -e HOST=https://www.testing.leflair.io --vus 10 --duration 10s tests/signUp.js`
 
-## Run as standalone
-- run all tests: `locust -f scripts/locustfile.py`
-- run client tests: `locust -f scripts/locustfile.py WebTest`
-- run API tests: `locust -f scripts/locustfile.py ApiTest`
+## Key metrics (https://docs.k6.io/docs/result-metrics)
+- **http_reqs**: total requests generated & total request per second (more is better)
+- **http_req_duration**: total time for server to process a request and respond completely (less is better)
+(equal to http_req_sending + http_req_waiting + http_req_receiving)
+- **vus**: number of virtual concurrent users generated
+- **iterations**: number of times the VUs executing the script
+- **checks**: number of failed checks
 
-## Run as master and slave
-- start master: `locust -f scripts/locustfile.py --master`
-- start slave: `locust -f scripts/locustfile.py --slave`
-
-## Start load test
-- go to https://localhost:8089
-- input total users to swarm and hatch rate
+*Notes*
+- more info about thresholds https://support.loadimpact.com/4.0/test-scripting/thresholds/
