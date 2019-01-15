@@ -1,7 +1,6 @@
 import config from '../common/config.js'
 import http from "k6/http"
 import { check, sleep } from "k6"
-import faker from "cdnjs.com/libraries/Faker"
 
 export let options = {
     vus: 10,
@@ -9,10 +8,7 @@ export let options = {
 }
 
 export default function () {
-    let res = http.post(__ENV.HOST + config.api.signUp, {
-        "email": faker.internet.email(), "password": faker.internet.password(),
-        "language": "vn", "gender": "M"
-    })
+    let res = http.get(__ENV.HOST + config.api.bestSellers)
 
     check(res, {
         'status is 200': res => res.status == 200,

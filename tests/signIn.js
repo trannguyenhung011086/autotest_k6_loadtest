@@ -1,4 +1,4 @@
-import config from '../config.js'
+import config from '../common/config.js'
 import http from "k6/http"
 import { check, sleep } from "k6"
 
