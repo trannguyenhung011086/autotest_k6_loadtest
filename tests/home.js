@@ -1,7 +1,7 @@
 import config from '../common/config.js'
-import http from "k6/http"
-import { check, sleep, group } from "k6"
-import { Trend, Rate, Counter } from "k6/metrics"
+import http from 'k6/http'
+import { check, sleep, group } from 'k6'
+import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let HomeChecks = new Rate('Home Checks')
 export let TodayChecks = new Rate('Today sales Checks')
@@ -9,6 +9,7 @@ export let CurrentChecks = new Rate('Current sales Checks')
 export let FeaturedChecks = new Rate('Featured sales Checks')
 export let InternationalChecks = new Rate('International sales Checks')
 export let PotdChecks = new Rate('POTD sales Checks')
+export let UpcomingChecks = new Rate('Upcoming sales Checks')
 
 export let HomeDuration = new Trend('Home Duration')
 export let TodayDuration = new Trend('Today sales Duration')
@@ -16,6 +17,7 @@ export let CurrentDuration = new Trend('Current sales Duration')
 export let FeaturedDuration = new Trend('Featured sales Duration')
 export let InternationalDuration = new Trend('International sales Duration')
 export let PotdDuration = new Trend('POTD sales Duration')
+export let UpcomingDuration = new Trend('Upcoming sales Duration')
 
 export let HomeReqs = new Counter('Home Requests')
 export let TodayReqs = new Counter('Today sales Requests')
@@ -23,6 +25,7 @@ export let CurrentReqs = new Counter('Current sales Requests')
 export let FeaturedReqs = new Counter('Featured sales Requests')
 export let InternationalReqs = new Counter('International sales Requests')
 export let PotdReqs = new Counter('POTD sales Requests')
+export let UpcomingReqs = new Counter('Upcoming sales Requests')
 
 export let options = {
     vus: 10,
@@ -33,7 +36,8 @@ export let options = {
         'Current sales Duration': ['p(95)<500'],
         'Featured sales Duration': ['p(95)<500'],
         'International sales Duration': ['p(95)<500'],
-        'POTD sales Duration': ['p(95)<500']
+        'POTD sales Duration': ['p(95)<500'],
+        'Upcoming sales Duration': ['p(95)<500']
     }
 }
 
@@ -57,7 +61,8 @@ export default function () {
             'current': __ENV.HOST + config.api.currentSales,
             'featured': __ENV.HOST + config.api.featuredSales,
             'international': __ENV.HOST + config.api.internationalSales,
-            'potd': __ENV.HOST + config.api.potdSales
+            'potd': __ENV.HOST + config.api.potdSales,
+            'upcoming': __ENV.HOST + config.api.upcomingSales
         }
         let res = http.batch(requests)
 
@@ -95,6 +100,13 @@ export default function () {
         }) || PotdChecks.add(1)
         PotdDuration.add(res['potd'].timings.duration)
         PotdReqs.add(1)
+
+        check(res['upcoming'], {
+            'status is 200': r => r.status == 200,
+            'transaction time is less than 500ms': r => r.timings.duration < 500
+        }) || UpcomingChecks.add(1)
+        UpcomingDuration.add(res['potd'].timings.duration)
+        UpcomingReqs.add(1)
 
         sleep(1)
     })
