@@ -55,8 +55,8 @@ export default function (data) {
     })
 
     group('GET / brand detail API', () => {
-        let random = Math.floor((Math.random() * (data.length - 10 + 1)) + 10)
-        
+        let random = Math.floor((Math.random() * data.length) + 1)
+
         let res = http.get(__ENV.HOST + config.api.brands + data[random].id)
         res.body = JSON.parse(res.body)
 

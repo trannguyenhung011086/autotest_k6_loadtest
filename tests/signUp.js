@@ -16,7 +16,8 @@ export let options = {
 
 export default function () {
     let res = http.post(__ENV.HOST + config.api.signUp, {
-        "email": faker.internet.email(), "password": faker.internet.password(),
+        "email": 'QA_TECH_' + faker.internet.email(),
+        "password": faker.internet.password(),
         "language": "vn", "gender": "M"
     })
 

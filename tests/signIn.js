@@ -16,9 +16,9 @@ export let options = {
 const users = JSON.parse(open('../common/users.json'))
 
 export default function () {
-    for (let i = 0; i < users.length; i++) {
+    for (let user of users) {
         let res = http.post(__ENV.HOST + config.api.signIn, {
-            "email": users[i].email, "password": users[i].password
+            "email": user.email, "password": user.password
         })
 
         check(res, {
