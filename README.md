@@ -12,3 +12,4 @@
 
 *Notes*
 - more info about thresholds https://support.loadimpact.com/4.0/test-scripting/thresholds/
+- to use debug mode, run: `k6 run --http-debug script.js` / `k6 run --http-debug="full" script.js`
