@@ -22,7 +22,7 @@ export function setup() {
 }
 
 export default function (data) {
-    let products = (JSON.parse(data)).products
+    let products = JSON.parse(data).products
     let random = Math.floor(Math.random() * products.length)
 
     let res = http.get(__ENV.HOST + config.api.product + products[random].id)
