@@ -46,10 +46,10 @@ export function setup() {
 }
 
 export default function (data) {
-    group('GET / get addresses API', () => {
-        let jar = http.cookieJar()
-        jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
+    let jar = http.cookieJar()
+    jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
 
+    group('GET / get addresses API', () => {
         let res = http.get(__ENV.HOST + config.api.addresses)
 
         check(res, {
@@ -63,9 +63,6 @@ export default function (data) {
     })
 
     group('POST / add address API', () => {
-        let jar = http.cookieJar()
-        jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
-
         let body = {
             address: faker.address.streetAddress(),
             city: {
@@ -98,9 +95,6 @@ export default function (data) {
     })
 
     group('PUT / update shipping address API', () => {
-        let jar = http.cookieJar()
-        jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
-
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let shipping = JSON.parse(addresses.body).shipping
 
@@ -138,9 +132,6 @@ export default function (data) {
     })
 
     group('PUT / update billing address API', () => {
-        let jar = http.cookieJar()
-        jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
-
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let billing = JSON.parse(addresses.body).billing
 
@@ -177,9 +168,6 @@ export default function (data) {
     })
 
     group('DELETE / delete shipping address API', () => {
-        let jar = http.cookieJar()
-        jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
-
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let shipping = JSON.parse(addresses.body).shipping
 
@@ -196,9 +184,6 @@ export default function (data) {
     })
 
     group('DELETE / delete billing address API', () => {
-        let jar = http.cookieJar()
-        jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
-
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let billing = JSON.parse(addresses.body).billing
 

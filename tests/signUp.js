@@ -2,7 +2,7 @@ import config from '../common/config.js'
 import http from 'k6/http'
 import { check, sleep } from 'k6'
 import { Trend } from 'k6/metrics'
-import faker from "cdnjs.com/libraries/Faker"
+import faker from 'cdnjs.com/libraries/Faker'
 
 export let SignUpDuration = new Trend('Sign up Duration')
 

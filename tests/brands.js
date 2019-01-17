@@ -67,7 +67,7 @@ export default function (data) {
             }) || BrandNoProductChecks.add(1)
             BrandNoProductDuration.add(res.timings.duration)
             BrandNoProductReqs.add(1)
-            console.log('index: ' + random + ' brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
+            console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
         } else {
             check(res, {
                 'status is 200': res => res.status == 200,
@@ -75,7 +75,7 @@ export default function (data) {
             }) || BrandWithProductChecks.add(1)
             BrandWithProductDuration.add(res.timings.duration)
             BrandWithProductReqs.add(1)
-            console.log('index: ' + random + ' brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')
+            console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')
         }
 
         sleep(1)

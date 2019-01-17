@@ -4,6 +4,7 @@ const config = {
         signIn: '/api/v2/account/signin',
         signOut: '/api/v2/account/signout',
         forgot: '/api/v2/account/forgot',
+        reset: '/api/v2/account/reset',
         password: '/api/v2/account/password',
         account: '/api/v2/account',
         addresses: '/api/v2/addresses',
