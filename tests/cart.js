@@ -7,13 +7,13 @@ export let AddCartDuration = new Trend('Add cart Duration')
 export let UpdateCartDuration = new Trend('Update cart Duration')
 export let RemoveCartDuration = new Trend('Remove cart Duration')
 
-export let AddCartChecks = new Trend('Add cart Checks')
-export let UpdateCartChecks = new Trend('Update cart Checks')
-export let RemoveCartChecks = new Trend('Remove cart Checks')
+export let AddCartChecks = new Rate('Add cart Checks')
+export let UpdateCartChecks = new Rate('Update cart Checks')
+export let RemoveCartChecks = new Rate('Remove cart Checks')
 
-export let AddCartReqs = new Trend('Add cart Requests')
-export let UpdateCartReqs = new Trend('Update cart Requests')
-export let RemoveCartReqs = new Trend('Remove cart Requests')
+export let AddCartReqs = new Counter('Add cart Requests')
+export let UpdateCartReqs = new Counter('Update cart Requests')
+export let RemoveCartReqs = new Counter('Remove cart Requests')
 
 let duration = 300
 export let options = {
