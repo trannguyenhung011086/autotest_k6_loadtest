@@ -21,7 +21,7 @@ export let AccessoriesReqs = new Counter('Get accessories Requests')
 export let HealthBeautyReqs = new Counter('Get health beauty Requests')
 export let HomeLifeStyleReqs = new Counter('Get home life style Requests')
 
-let duration = 300
+let duration = 200
 export let options = {
     vus: 10,
     duration: '30s',
