@@ -5,11 +5,12 @@ import { Trend } from 'k6/metrics'
 
 export let SignInDuration = new Trend('Sign in Duration')
 
+let duration = 500
 export let options = {
     vus: 10,
     duration: '30s',
     thresholds: {
-        'Sign in Duration': ['p(95)<500']
+        'Sign in Duration': [`p(95)<${duration}`]
     }
 }
 
@@ -22,8 +23,8 @@ export default function () {
         })
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         })
         SignInDuration.add(res.timings.duration)
     }

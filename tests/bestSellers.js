@@ -5,11 +5,12 @@ import { Trend } from 'k6/metrics'
 
 export let BestSellersDuration = new Trend('Best sellers Duration')
 
+let duration = 500
 export let options = {
     vus: 10,
     duration: '30s',
     thresholds: {
-        'Best sellers Duration': ['p(95)<500']
+        'Best sellers Duration': [`p(95)<${duration}`]
     }
 }
 
@@ -17,8 +18,8 @@ export default function () {
     let res = http.get(__ENV.HOST + config.api.bestSellers)
 
     check(res, {
-        'status is 200': res => res.status == 200,
-        'transaction time is less than 500ms': res => res.timings.duration < 500
+        'status is OK': res => res.status == 200,
+        'transaction time is less than threshold': res => res.timings.duration < duration
     })
     BestSellersDuration.add(res.timings.duration)
 

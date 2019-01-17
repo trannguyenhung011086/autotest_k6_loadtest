@@ -13,12 +13,13 @@ export let UpdateAccountChecks = new Rate('Update account Checks')
 export let GetAccountReqs = new Counter('Get account Requests')
 export let UpdateAccountReqs = new Counter('Update account Requests')
 
+let duration = 500
 export let options = {
     vus: 10,
     duration: '30s',
     thresholds: {
-        'Get account Duration': ['p(95)<500'],
-        'Update account Duration': ['p(95)<500']
+        'Get account Duration': [`p(95)<${duration}`],
+        'Update account Duration': [`p(95)<${duration}`]
     }
 }
 
@@ -37,8 +38,8 @@ export default function (data) {
         let res = http.get(__ENV.HOST + config.api.account)
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || GetAccountChecks.add(1)
         GetAccountDuration.add(res.timings.duration)
         GetAccountReqs.add(1)
@@ -55,8 +56,8 @@ export default function (data) {
             { headers: { "Content-Type": "application/json" } })
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || UpdateAccountChecks.add(1)
         UpdateAccountDuration.add(res.timings.duration)
         UpdateAccountReqs.add(1)

@@ -6,11 +6,12 @@ import faker from 'cdnjs.com/libraries/Faker'
 
 export let SignUpDuration = new Trend('Sign up Duration')
 
+let duration = 1000
 export let options = {
     vus: 10,
     duration: '30s',
     thresholds: {
-        'Sign up Duration': ['p(95)<1000']
+        'Sign up Duration': [`p(95)<${duration}`]
     }
 }
 
@@ -22,8 +23,8 @@ export default function () {
     })
 
     check(res, {
-        'status is 200': res => res.status == 200,
-        'transaction time is less than 500ms': res => res.timings.duration < 1000
+        'status is OK': res => res.status == 200,
+        'transaction time is less than threshold': res => res.timings.duration < duration
     })
     SignUpDuration.add(res.timings.duration)
 

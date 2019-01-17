@@ -12,12 +12,13 @@ export let GetOrderChecks = new Rate('Get an order Checks')
 export let GetOrdersReqs = new Counter('Get orders Requests')
 export let GetOrderReqs = new Counter('Get an order Requests')
 
+let duration = 500
 export let options = {
     vus: 10,
     duration: '30s',
     thresholds: {
-        'Get orders Duration': ['p(95)<500'],
-        'Get an order Duration': ['p(95)<500']
+        'Get orders Duration': [`p(95)<${duration}`],
+        'Get an order Duration': [`p(95)<${duration}`]
     }
 }
 
@@ -36,8 +37,8 @@ export default function (data) {
         let res = http.get(__ENV.HOST + config.api.orders)
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || GetOrdersChecks.add(1)
         GetOrdersDuration.add(res.timings.duration)
         GetOrdersReqs.add(1)
@@ -52,8 +53,8 @@ export default function (data) {
             let res = http.get(__ENV.HOST + config.api.orders + '/' + order.id)
 
             check(res, {
-                'status is 200': res => res.status == 200,
-                'transaction time is less than 500ms': res => res.timings.duration < 500
+                'status is OK': res => res.status == 200,
+                'transaction time is less than threshold': res => res.timings.duration < duration
             }) || GetOrderChecks.add(1)
             GetOrderDuration.add(res.timings.duration)
             GetOrderReqs.add(1)

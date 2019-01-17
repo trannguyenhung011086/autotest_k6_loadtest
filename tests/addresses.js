@@ -25,16 +25,17 @@ export let UpdateBillingReqs = new Counter('Update billing Requests')
 export let DeleteShippingReqs = new Counter('Delete shipping Requests')
 export let DeleteBillingReqs = new Counter('Delete billing Requests')
 
+let duration = 500
 export let options = {
     vus: 10,
     duration: '30s',
     thresholds: {
-        'Get addresses Duration': ['p(95)<500'],
-        'Add address Duration': ['p(95)<500'],
-        'Update shipping Duration': ['p(95)<500'],
-        'Update billing Duration': ['p(95)<500'],
-        'Delete shipping Duration': ['p(95)<500'],
-        'Delete billing Duration': ['p(95)<500']
+        'Get addresses Duration': [`p(95)<${duration}`],
+        'Add address Duration': [`p(95)<${duration}`],
+        'Update shipping Duration': [`p(95)<${duration}`],
+        'Update billing Duration': [`p(95)<${duration}`],
+        'Delete shipping Duration': [`p(95)<${duration}`],
+        'Delete billing Duration': [`p(95)<${duration}`]
     }
 }
 
@@ -53,8 +54,8 @@ export default function (data) {
         let res = http.get(__ENV.HOST + config.api.addresses)
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || GetAddressesChecks.add(1)
         GetAddressesDuration.add(res.timings.duration)
         GetAddressesReqs.add(1)
@@ -85,8 +86,8 @@ export default function (data) {
             { headers: { "Content-Type": "application/json" } })
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || AddAddressChecks.add(1)
         AddAddressDuration.add(res.timings.duration)
         AddAddressReqs.add(1)
@@ -122,8 +123,8 @@ export default function (data) {
             { headers: { "Content-Type": "application/json" } })
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || UpdateShippingChecks.add(1)
         UpdateShippingDuration.add(res.timings.duration)
         UpdateShippingReqs.add(1)
@@ -158,8 +159,8 @@ export default function (data) {
             { headers: { "Content-Type": "application/json" } })
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || UpdateBillingChecks.add(1)
         UpdateBillingDuration.add(res.timings.duration)
         UpdateBillingReqs.add(1)
@@ -174,8 +175,8 @@ export default function (data) {
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + shipping[0].id)
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || DeleteShippingChecks.add(1)
         DeleteShippingDuration.add(res.timings.duration)
         DeleteShippingReqs.add(1)
@@ -190,8 +191,8 @@ export default function (data) {
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + billing[0].id)
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || DeleteBillingChecks.add(1)
         DeleteBillingDuration.add(res.timings.duration)
         DeleteBillingReqs.add(1)

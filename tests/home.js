@@ -27,17 +27,18 @@ export let InternationalReqs = new Counter('International sales Requests')
 export let PotdReqs = new Counter('POTD sales Requests')
 export let UpcomingReqs = new Counter('Upcoming sales Requests')
 
+let duration = 500
 export let options = {
     vus: 10,
     duration: '30s',
     thresholds: {
-        'Home Duration': ['p(95)<500'],
-        'Today sales Duration': ['p(95)<500'],
-        'Current sales Duration': ['p(95)<500'],
-        'Featured sales Duration': ['p(95)<500'],
-        'International sales Duration': ['p(95)<500'],
-        'POTD sales Duration': ['p(95)<500'],
-        'Upcoming sales Duration': ['p(95)<500']
+        'Home Duration': [`p(95)<${duration}`],
+        'Today sales Duration': [`p(95)<${duration}`],
+        'Current sales Duration': [`p(95)<${duration}`],
+        'Featured sales Duration': [`p(95)<${duration}`],
+        'International sales Duration': [`p(95)<${duration}`],
+        'POTD sales Duration': [`p(95)<${duration}`],
+        'Upcoming sales Duration': [`p(95)<${duration}`]
     }
 }
 
@@ -46,8 +47,8 @@ export default function () {
         let res = http.get(__ENV.HOST + config.api.home)
 
         check(res, {
-            'status is 200': res => res.status == 200,
-            'transaction time is less than 500ms': res => res.timings.duration < 500
+            'status is OK': res => res.status == 200,
+            'transaction time is less than threshold': res => res.timings.duration < duration
         }) || HomeChecks.add(1)
         HomeDuration.add(res.timings.duration)
         HomeReqs.add(1)
@@ -67,43 +68,43 @@ export default function () {
         let res = http.batch(requests)
 
         check(res['today'], {
-            'status is 200': r => r.status == 200,
-            'transaction time is less than 500ms': r => r.timings.duration < 500
+            'status is OK': r => r.status == 200,
+            'transaction time is less than threshold': r => r.timings.duration < duration
         }) || TodayChecks.add(1)
         TodayDuration.add(res['today'].timings.duration)
         TodayReqs.add(1)
 
         check(res['current'], {
-            'status is 200': r => r.status == 200,
-            'transaction time is less than 500ms': r => r.timings.duration < 500
+            'status is OK': r => r.status == 200,
+            'transaction time is less than threshold': r => r.timings.duration < duration
         }) || CurrentChecks.add(1)
         CurrentDuration.add(res['current'].timings.duration)
         CurrentReqs.add(1)
 
         check(res['featured'], {
-            'status is 200': r => r.status == 200,
-            'transaction time is less than 500ms': r => r.timings.duration < 500
+            'status is OK': r => r.status == 200,
+            'transaction time is less than threshold': r => r.timings.duration < duration
         }) || FeaturedChecks.add(1)
         FeaturedDuration.add(res['featured'].timings.duration)
         FeaturedReqs.add(1)
 
         check(res['international'], {
-            'status is 200': r => r.status == 200,
-            'transaction time is less than 500ms': r => r.timings.duration < 500
+            'status is OK': r => r.status == 200,
+            'transaction time is less than threshold': r => r.timings.duration < duration
         }) || InternationalChecks.add(1)
         InternationalDuration.add(res['international'].timings.duration)
         InternationalReqs.add(1)
 
         check(res['potd'], {
-            'status is 200': r => r.status == 200,
-            'transaction time is less than 500ms': r => r.timings.duration < 500
+            'status is OK': r => r.status == 200,
+            'transaction time is less than threshold': r => r.timings.duration < duration
         }) || PotdChecks.add(1)
         PotdDuration.add(res['potd'].timings.duration)
         PotdReqs.add(1)
 
         check(res['upcoming'], {
-            'status is 200': r => r.status == 200,
-            'transaction time is less than 500ms': r => r.timings.duration < 500
+            'status is OK': r => r.status == 200,
+            'transaction time is less than threshold': r => r.timings.duration < duration
         }) || UpcomingChecks.add(1)
         UpcomingDuration.add(res['potd'].timings.duration)
         UpcomingReqs.add(1)
