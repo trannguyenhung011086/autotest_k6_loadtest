@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep } from 'k6'
+import { sleep } from 'k6'
 import { Trend } from 'k6/metrics'
 
 export let GetProductDuration = new Trend('Get product Duration')
@@ -28,10 +28,7 @@ export default function (data) {
     let res = http.get(__ENV.HOST + config.api.product + products[random].id)
     console.log('product: ' + (JSON.parse(res.body)).title + ' ' + (JSON.parse(res.body)).id)
 
-    check(res, {
-        'status is OK': res => res.status == 200,
-        'transaction time is less than threshold': res => res.timings.duration < duration
-    })
+    globalChecks(res, duration)
     GetProductDuration.add(res.timings.duration)
 
     sleep(1)

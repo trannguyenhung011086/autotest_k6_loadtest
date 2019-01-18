@@ -1,9 +1,11 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep } from 'k6'
-import { Trend } from 'k6/metrics'
+import { sleep } from 'k6'
+import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let BestSellersDuration = new Trend('Best sellers Duration')
+export let BestSellersChecks = new Rate('Best sellers Checks')
+export let BestSellersReqs = new Counter('Best sellers Requests')
 
 let duration = 500
 export let options = {
@@ -17,11 +19,9 @@ export let options = {
 export default function () {
     let res = http.get(__ENV.HOST + config.api.bestSellers)
 
-    check(res, {
-        'status is OK': res => res.status == 200,
-        'transaction time is less than threshold': res => res.timings.duration < duration
-    })
+    globalChecks(res, duration) || BestSellersChecks.add(1)
     BestSellersDuration.add(res.timings.duration)
+    BestSellersReqs.add(1)
 
     sleep(1)
 }

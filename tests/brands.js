@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep, group } from 'k6'
+import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let BrandsDuration = new Trend('Brands Duration')
@@ -45,10 +45,7 @@ export default function (data) {
     group('GET / brands API', () => {
         let res = http.get(__ENV.HOST + config.api.brands)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || BrandsChecks.add(1)
+        globalChecks(res, duration) || BrandsChecks.add(1)
         BrandsDuration.add(res.timings.duration)
         BrandsReqs.add(1)
 
@@ -62,18 +59,12 @@ export default function (data) {
         res.body = JSON.parse(res.body)
 
         if (res.body.products.length == 0) {
-            check(res, {
-                'status is OK': res => res.status == 200,
-                'transaction time is less than threshold': res => res.timings.duration < duration
-            }) || BrandNoProductChecks.add(1)
+            globalChecks(res, duration) || BrandNoProductChecks.add(1)
             BrandNoProductDuration.add(res.timings.duration)
             BrandNoProductReqs.add(1)
             console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
         } else {
-            check(res, {
-                'status is OK': res => res.status == 200,
-                'transaction time is less than threshold': res => res.timings.duration < duration
-            }) || BrandWithProductChecks.add(1)
+            globalChecks(res, duration) || BrandWithProductChecks.add(1)
             BrandWithProductDuration.add(res.timings.duration)
             BrandWithProductReqs.add(1)
             console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')

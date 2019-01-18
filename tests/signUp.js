@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep } from 'k6'
+import { sleep } from 'k6'
 import { Trend } from 'k6/metrics'
 import faker from 'cdnjs.com/libraries/Faker'
 
@@ -22,10 +22,7 @@ export default function () {
         "language": "vn", "gender": "M"
     })
 
-    check(res, {
-        'status is OK': res => res.status == 200,
-        'transaction time is less than threshold': res => res.timings.duration < duration
-    })
+    globalChecks(res, duration)
     SignUpDuration.add(res.timings.duration)
 
     sleep(1)

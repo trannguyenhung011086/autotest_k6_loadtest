@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep, group } from 'k6'
+import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 import faker from 'cdnjs.com/libraries/Faker'
 
@@ -53,10 +53,7 @@ export default function (data) {
     group('GET / get addresses API', () => {
         let res = http.get(__ENV.HOST + config.api.addresses)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || GetAddressesChecks.add(1)
+        globalChecks(res, duration) || GetAddressesChecks.add(1)
         GetAddressesDuration.add(res.timings.duration)
         GetAddressesReqs.add(1)
 
@@ -85,10 +82,7 @@ export default function (data) {
         let res = http.post(__ENV.HOST + config.api.addresses, JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || AddAddressChecks.add(1)
+        globalChecks(res, duration) || AddAddressChecks.add(1)
         AddAddressDuration.add(res.timings.duration)
         AddAddressReqs.add(1)
 
@@ -122,10 +116,7 @@ export default function (data) {
             JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || UpdateShippingChecks.add(1)
+        globalChecks(res, duration) || UpdateShippingChecks.add(1)
         UpdateShippingDuration.add(res.timings.duration)
         UpdateShippingReqs.add(1)
 
@@ -158,10 +149,7 @@ export default function (data) {
             JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || UpdateBillingChecks.add(1)
+        globalChecks(res, duration) || UpdateBillingChecks.add(1)
         UpdateBillingDuration.add(res.timings.duration)
         UpdateBillingReqs.add(1)
 
@@ -174,10 +162,7 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + shipping[0].id)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || DeleteShippingChecks.add(1)
+        globalChecks(res, duration) || DeleteShippingChecks.add(1)
         DeleteShippingDuration.add(res.timings.duration)
         DeleteShippingReqs.add(1)
 
@@ -190,10 +175,7 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + billing[0].id)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || DeleteBillingChecks.add(1)
+        globalChecks(res, duration) || DeleteBillingChecks.add(1)
         DeleteBillingDuration.add(res.timings.duration)
         DeleteBillingReqs.add(1)
 

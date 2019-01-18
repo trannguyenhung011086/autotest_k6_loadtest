@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep, group } from 'k6'
+import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let ValidVoucherDuration = new Trend('Check valid voucher Duration')
@@ -36,10 +36,7 @@ export default function (data) {
     group('GET / check valid voucher API', () => {
         let res = http.get(__ENV.HOST + config.api.voucher + 'ABBANK')
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || ValidVoucherChecks.add(1)
+        globalChecks(res, duration) || ValidVoucherChecks.add(1)
         ValidVoucherDuration.add(res.timings.duration)
         ValidVoucherReqs.add(1)
 
@@ -49,10 +46,7 @@ export default function (data) {
     group('GET / check invalid voucher API', () => {
         let res = http.get(__ENV.HOST + config.api.voucher + 'INVALID-ID')
 
-        check(res, {
-            'status is not OK': res => res.status == 400,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || InvalidVoucherChecks.add(1)
+        globalChecks(res, duration, 400) || InvalidVoucherChecks.add(1)
         InvalidVoucherDuration.add(res.timings.duration)
         InvalidVoucherReqs.add(1)
 

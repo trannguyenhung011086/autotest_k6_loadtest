@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep, group } from 'k6'
+import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let GetOngoingSaleDuration = new Trend('Get ongoing sale Duration')
@@ -43,10 +43,7 @@ export default function (data) {
         let res = http.get(__ENV.HOST + config.api.sales + sales[random].id)
         console.log('ongoing sale: ' + sales[random].title + ' ' + sales[random].id)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || GetOngoingSaleChecks.add(1)
+        globalChecks(res, duration) || GetOngoingSaleChecks.add(1)
         GetOngoingSaleDuration.add(res.timings.duration)
         GetOngoingSaleReqs.add(1)
 
@@ -60,10 +57,7 @@ export default function (data) {
         let res = http.get(__ENV.HOST + config.api.upcomingSale + dates[0].sales[random].id)
         console.log('upcoming sale: ' + dates[0].sales[random].title + ' ' + dates[0].sales[random].id)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || GetUpcomingSaleChecks.add(1)
+        globalChecks(res, duration) || GetUpcomingSaleChecks.add(1)
         GetUpcomingSaleDuration.add(res.timings.duration)
         GetUpcomingSaleReqs.add(1)
 

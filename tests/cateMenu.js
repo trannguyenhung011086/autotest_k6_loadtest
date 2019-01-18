@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep } from 'k6'
+import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let MenuDuration = new Trend('Get top menu Duration')
@@ -49,45 +49,27 @@ export default function () {
     }
     let res = http.batch(requests)
 
-    check(res['top'], {
-        'status is OK': r => r.status == 200,
-        'transaction time is less than threshold': r => r.timings.duration < duration
-    }) || MenuChecks.add(1)
-    MenuDuration.add(res['apparel'].timings.duration)
+    globalChecks(res['top'], duration) || MenuChecks.add(1)
+    MenuDuration.add(res['top'].timings.duration)
     MenuReqs.add(1)
 
-    check(res['apparel'], {
-        'status is OK': r => r.status == 200,
-        'transaction time is less than threshold': r => r.timings.duration < duration
-    }) || ApparelChecks.add(1)
+    globalChecks(res['apparel'], duration) || ApparelChecks.add(1)
     ApparelDuration.add(res['apparel'].timings.duration)
     ApparelReqs.add(1)
 
-    check(res['bags'], {
-        'status is OK': r => r.status == 200,
-        'transaction time is less than threshold': r => r.timings.duration < duration
-    }) || BagsShoesChecks.add(1)
+    globalChecks(res['bags'], duration) || BagsShoesChecks.add(1)
     BagsShoesDuration.add(res['bags'].timings.duration)
     BagsShoesReqs.add(1)
 
-    check(res['accessories'], {
-        'status is OK': r => r.status == 200,
-        'transaction time is less than threshold': r => r.timings.duration < duration
-    }) || AccessoriesChecks.add(1)
+    globalChecks(res['accessories'], duration) || AccessoriesChecks.add(1)
     AccessoriesDuration.add(res['accessories'].timings.duration)
     AccessoriesReqs.add(1)
 
-    check(res['health'], {
-        'status is OK': r => r.status == 200,
-        'transaction time is less than threshold': r => r.timings.duration < duration
-    }) || HealthBeautyChecks.add(1)
+    globalChecks(res['health'], duration) || HealthBeautyChecks.add(1)
     HealthBeautyDuration.add(res['health'].timings.duration)
     HealthBeautyReqs.add(1)
 
-    check(res['home'], {
-        'status is OK': r => r.status == 200,
-        'transaction time is less than threshold': r => r.timings.duration < duration
-    }) || HomeLifeStyleChecks.add(1)
+    globalChecks(res['home'], duration) || HomeLifeStyleChecks.add(1)
     HomeLifeStyleDuration.add(res['home'].timings.duration)
     HomeLifeStyleReqs.add(1)
 

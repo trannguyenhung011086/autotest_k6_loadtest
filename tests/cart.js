@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep, group } from 'k6'
+import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let AddCartDuration = new Trend('Add cart Duration')
@@ -41,10 +41,7 @@ export default function (data) {
         let res = http.post(__ENV.HOST + config.api.cart,
             { "productId": JSON.parse(data).products[0].id })
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || AddCartChecks.add(1)
+        globalChecks(res, duration) || AddCartChecks.add(1)
         AddCartDuration.add(res.timings.duration)
         AddCartReqs.add(1)
 
@@ -57,10 +54,7 @@ export default function (data) {
         let res = http.put(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id,
             { "quantity": "2" })
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || UpdateCartChecks.add(1)
+        globalChecks(res, duration) || UpdateCartChecks.add(1)
         UpdateCartDuration.add(res.timings.duration)
         UpdateCartReqs.add(1)
 
@@ -72,10 +66,7 @@ export default function (data) {
             { "productId": JSON.parse(data).products[0].id })
         let res = http.del(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || RemoveCartChecks.add(1)
+        globalChecks(res, duration) || RemoveCartChecks.add(1)
         RemoveCartDuration.add(res.timings.duration)
         RemoveCartReqs.add(1)
 

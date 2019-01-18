@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep, group } from 'k6'
+import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let ValidGiftCardDuration = new Trend('Check valid gift card Duration')
@@ -36,10 +36,7 @@ export default function (data) {
     group('GET / check valid gift card API', () => {
         let res = http.get(__ENV.HOST + config.api.giftcard + '4TZACVS')
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || ValidGiftCardChecks.add(1)
+        globalChecks(res, duration) || ValidGiftCardChecks.add(1)
         ValidGiftCardDuration.add(res.timings.duration)
         ValidGiftCardReqs.add(1)
 
@@ -49,10 +46,7 @@ export default function (data) {
     group('GET / check invalid gift card API', () => {
         let res = http.get(__ENV.HOST + config.api.giftcard + 'INVALID-ID')
 
-        check(res, {
-            'status is not OK': res => res.status == 500,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || InvalidGiftCardChecks.add(1)
+        globalChecks(res, duration, 500) || InvalidGiftCardChecks.add(1)
         InvalidGiftCardDuration.add(res.timings.duration)
         InvalidGiftCardReqs.add(1)
 

@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep, group } from 'k6'
+import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let HomeChecks = new Rate('Home Checks')
@@ -46,10 +46,7 @@ export default function () {
     group('GET / home API', () => {
         let res = http.get(__ENV.HOST + config.api.home)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || HomeChecks.add(1)
+        globalChecks(res, duration) || HomeChecks.add(1)
         HomeDuration.add(res.timings.duration)
         HomeReqs.add(1)
 
@@ -67,46 +64,28 @@ export default function () {
         }
         let res = http.batch(requests)
 
-        check(res['today'], {
-            'status is OK': r => r.status == 200,
-            'transaction time is less than threshold': r => r.timings.duration < duration
-        }) || TodayChecks.add(1)
+        globalChecks(res['today'], duration) || TodayChecks.add(1)
         TodayDuration.add(res['today'].timings.duration)
         TodayReqs.add(1)
 
-        check(res['current'], {
-            'status is OK': r => r.status == 200,
-            'transaction time is less than threshold': r => r.timings.duration < duration
-        }) || CurrentChecks.add(1)
+        globalChecks(res['current'], duration) || CurrentChecks.add(1)
         CurrentDuration.add(res['current'].timings.duration)
         CurrentReqs.add(1)
 
-        check(res['featured'], {
-            'status is OK': r => r.status == 200,
-            'transaction time is less than threshold': r => r.timings.duration < duration
-        }) || FeaturedChecks.add(1)
+        globalChecks(res['featured'], duration) || FeaturedChecks.add(1)
         FeaturedDuration.add(res['featured'].timings.duration)
         FeaturedReqs.add(1)
 
-        check(res['international'], {
-            'status is OK': r => r.status == 200,
-            'transaction time is less than threshold': r => r.timings.duration < duration
-        }) || InternationalChecks.add(1)
+        globalChecks(res['international'], duration) || InternationalChecks.add(1)
         InternationalDuration.add(res['international'].timings.duration)
         InternationalReqs.add(1)
 
-        check(res['potd'], {
-            'status is OK': r => r.status == 200,
-            'transaction time is less than threshold': r => r.timings.duration < duration
-        }) || PotdChecks.add(1)
+        globalChecks(res['potd'], duration) || PotdChecks.add(1)
         PotdDuration.add(res['potd'].timings.duration)
         PotdReqs.add(1)
 
-        check(res['upcoming'], {
-            'status is OK': r => r.status == 200,
-            'transaction time is less than threshold': r => r.timings.duration < duration
-        }) || UpcomingChecks.add(1)
-        UpcomingDuration.add(res['potd'].timings.duration)
+        globalChecks(res['upcoming'], duration) || UpcomingChecks.add(1)
+        UpcomingDuration.add(res['upcoming'].timings.duration)
         UpcomingReqs.add(1)
 
         sleep(1)

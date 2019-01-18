@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep, group } from 'k6'
+import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let GetOrdersDuration = new Trend('Get orders Duration')
@@ -36,10 +36,7 @@ export default function (data) {
     group('GET / get orders API', () => {
         let res = http.get(__ENV.HOST + config.api.orders)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || GetOrdersChecks.add(1)
+        globalChecks(res, duration) || GetOrdersChecks.add(1)
         GetOrdersDuration.add(res.timings.duration)
         GetOrdersReqs.add(1)
 
@@ -52,10 +49,7 @@ export default function (data) {
         for (let order of JSON.parse(orders.body)) {
             let res = http.get(__ENV.HOST + config.api.orders + '/' + order.id)
 
-            check(res, {
-                'status is OK': res => res.status == 200,
-                'transaction time is less than threshold': res => res.timings.duration < duration
-            }) || GetOrderChecks.add(1)
+            globalChecks(res, duration) || GetOrderChecks.add(1)
             GetOrderDuration.add(res.timings.duration)
             GetOrderReqs.add(1)
         }

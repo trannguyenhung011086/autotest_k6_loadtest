@@ -1,6 +1,6 @@
-import config from '../common/config.js'
+import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
-import { check, sleep, group } from 'k6'
+import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 import faker from 'cdnjs.com/libraries/Faker'
 
@@ -37,10 +37,7 @@ export default function (data) {
     group('GET / get account API', () => {
         let res = http.get(__ENV.HOST + config.api.account)
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || GetAccountChecks.add(1)
+        globalChecks(res, duration) || GetAccountChecks.add(1)
         GetAccountDuration.add(res.timings.duration)
         GetAccountReqs.add(1)
 
@@ -55,10 +52,7 @@ export default function (data) {
         let res = http.put(__ENV.HOST + config.api.account, JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        check(res, {
-            'status is OK': res => res.status == 200,
-            'transaction time is less than threshold': res => res.timings.duration < duration
-        }) || UpdateAccountChecks.add(1)
+        globalChecks(res, duration) || UpdateAccountChecks.add(1)
         UpdateAccountDuration.add(res.timings.duration)
         UpdateAccountReqs.add(1)
 
