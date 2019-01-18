@@ -26,6 +26,7 @@ const config = {
         featuredSales: '/api/v2/home/featured',
         potdSales: '/api/v2/home/potd',
         bestSellers: '/api/v2/best-sellers/',
+        cateMenu: '/api/menus/code/TOP_NAV?items=true',
         cateApparel: '/api/menus/items/5b56d3448f0dd7c0480acd1b',
         cateBagsShoes: '/api/menus/items/5b56d3448f0dd7c0480acd1f',
         cateAccessories: '/api/menus/items/5b56d3448f0dd7c0480acd28',
