@@ -8,11 +8,12 @@ export let SignOutChecks = new Rate('Sign out Checks')
 export let SignOutReqs = new Counter('Sign out Requests')
 
 let duration = 500
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
-        'Sign out Duration': [`p(95)<${duration}`]
+        'Sign out Duration': [`p(95)<${duration}`],
+        'Sign out Checks': [`rate<${rate}`]
     }
 }
 

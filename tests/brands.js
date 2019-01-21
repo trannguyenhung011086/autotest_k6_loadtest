@@ -16,13 +16,16 @@ export let BrandNoProductReqs = new Counter('Brand with no product Requests')
 export let BrandWithProductReqs = new Counter('Brand with products Requests')
 
 let duration = 500
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
         'Brands Duration': [`p(95)<${duration}`],
+        'Brands Checks': [`rate<${rate}`],
         'Brand with no product Duration': [`p(95)<${duration}`],
-        'Brand with products Duration': [`p(95)<${duration}`]
+        'Brand with no product Checks': [`rate<${rate}`],
+        'Brand with products Duration': [`p(95)<${duration}`],
+        'Brand with products Checks': [`rate<${rate}`]
     }
 }
 

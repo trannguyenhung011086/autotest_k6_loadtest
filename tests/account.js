@@ -14,12 +14,14 @@ export let GetAccountReqs = new Counter('Get account Requests')
 export let UpdateAccountReqs = new Counter('Update account Requests')
 
 let duration = 500
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
         'Get account Duration': [`p(95)<${duration}`],
-        'Update account Duration': [`p(95)<${duration}`]
+        'Get account Checks': [`rate<${rate}`],
+        'Update account Duration': [`p(95)<${duration}`],
+        'Update account Checks': [`rate<${rate}`]
     }
 }
 

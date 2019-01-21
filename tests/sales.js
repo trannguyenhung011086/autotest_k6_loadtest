@@ -13,12 +13,14 @@ export let GetOngoingSaleReqs = new Counter('Get ongoing sale Requests')
 export let GetUpcomingSaleReqs = new Counter('Get upcoming sale Requests')
 
 let duration = 300
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
         'Get ongoing sale Duration': [`p(95)<${duration}`],
-        'Get upcoming sale Duration': [`p(95)<${duration}`]
+        'Get ongoing sale Checks': [`rate<${rate}`],
+        'Get upcoming sale Duration': [`p(95)<${duration}`],
+        'Get upcoming sale Checks': [`rate<${rate}`]
     }
 }
 

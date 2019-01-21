@@ -9,11 +9,12 @@ export let SignUpChecks = new Rate('Sign up Checks')
 export let SignUpReqs = new Counter('Sign up Requests')
 
 let duration = 1000
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
-        'Sign up Duration': [`p(95)<${duration}`]
+        'Sign up Duration': [`p(95)<${duration}`],
+        'Sign up Checks': [`rate<${rate}`]
     }
 }
 

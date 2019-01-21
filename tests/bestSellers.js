@@ -8,11 +8,12 @@ export let BestSellersChecks = new Rate('Best sellers Checks')
 export let BestSellersReqs = new Counter('Best sellers Requests')
 
 let duration = 500
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
-        'Best sellers Duration': [`p(95)<${duration}`]
+        'Best sellers Duration': [`p(95)<${duration}`],
+        'Best sellers Checks': [`rate<${rate}`]
     }
 }
 
@@ -20,7 +21,7 @@ export default function () {
     let res = http.get(__ENV.HOST + config.api.bestSellers)
 
     let checkRes = globalChecks(res, duration)
-    
+
     BestSellersChecks.add(!checkRes)
     BestSellersDuration.add(res.timings.duration)
     BestSellersReqs.add(1)

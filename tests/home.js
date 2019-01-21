@@ -28,17 +28,24 @@ export let PotdReqs = new Counter('POTD sales Requests')
 export let UpcomingReqs = new Counter('Upcoming sales Requests')
 
 let duration = 500
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
         'Home Duration': [`p(95)<${duration}`],
+        'Home Checks': [`rate<${rate}`],
         'Today sales Duration': [`p(95)<${duration}`],
+        'Today sales Checks': [`rate<${rate}`],
         'Current sales Duration': [`p(95)<${duration}`],
+        'Current sales Checks': [`rate<${rate}`],
         'Featured sales Duration': [`p(95)<${duration}`],
+        'Featured sales Checks': [`rate<${rate}`],
         'International sales Duration': [`p(95)<${duration}`],
+        'International sales Checks': [`rate<${rate}`],
         'POTD sales Duration': [`p(95)<${duration}`],
-        'Upcoming sales Duration': [`p(95)<${duration}`]
+        'POTD sales Checks': [`rate<${rate}`],
+        'Upcoming sales Duration': [`p(95)<${duration}`],
+        'Upcoming sales Checks': [`rate<${rate}`]
     }
 }
 

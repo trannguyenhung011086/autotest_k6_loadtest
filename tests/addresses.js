@@ -26,16 +26,22 @@ export let DeleteShippingReqs = new Counter('Delete shipping Requests')
 export let DeleteBillingReqs = new Counter('Delete billing Requests')
 
 let duration = 500
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
         'Get addresses Duration': [`p(95)<${duration}`],
+        'Get addresses Checks': [`rate<${rate}`],
         'Add address Duration': [`p(95)<${duration}`],
+        'Add address Checks': [`rate<${rate}`],
         'Update shipping Duration': [`p(95)<${duration}`],
+        'Update shipping Checks': [`rate<${rate}`],
         'Update billing Duration': [`p(95)<${duration}`],
+        'Update billing Checks': [`rate<${rate}`],
         'Delete shipping Duration': [`p(95)<${duration}`],
-        'Delete billing Duration': [`p(95)<${duration}`]
+        'Delete shipping Checks': [`rate<${rate}`],
+        'Delete billing Duration': [`p(95)<${duration}`],
+        'Delete billing Checks': [`rate<${rate}`]
     }
 }
 

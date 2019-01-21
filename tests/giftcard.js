@@ -13,12 +13,14 @@ export let ValidGiftCardReqs = new Counter('Check valid gift card Requests')
 export let InvalidGiftCardReqs = new Counter('Check invalid gift card Requests')
 
 let duration = 100
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
         'Check valid gift card Duration': [`p(95)<${duration}`],
-        'Check invalid gift card Duration': [`p(95)<${duration}`]
+        'Check valid gift card Checks': [`rate<${rate}`],
+        'Check invalid gift card Duration': [`p(95)<${duration}`],
+        'Check invalid gift card Checks': [`rate<${rate}`]
     }
 }
 

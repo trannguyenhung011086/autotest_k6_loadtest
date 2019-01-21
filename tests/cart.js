@@ -16,13 +16,16 @@ export let UpdateCartReqs = new Counter('Update cart Requests')
 export let RemoveCartReqs = new Counter('Remove cart Requests')
 
 let duration = 300
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
         'Add cart Duration': [`p(95)<${duration}`],
+        'Add cart Checks': [`rate<${rate}`],
         'Update cart Duration': [`p(95)<${duration}`],
-        'Remove cart Duration': [`p(95)<${duration}`]
+        'Update cart Checks': [`rate<${rate}`],
+        'Remove cart Duration': [`p(95)<${duration}`],
+        'Remove cart Checks': [`rate<${rate}`]
     }
 }
 

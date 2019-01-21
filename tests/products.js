@@ -8,11 +8,12 @@ export let GetProductChecks = new Rate('Get product Checks')
 export let GetProductReqs = new Counter('Get product Requests')
 
 let duration = 300
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
-        'Get product Duration': [`p(95)<${duration}`]
+        'Get product Duration': [`p(95)<${duration}`],
+        'Get product Checks': [`rate<${rate}`]
     }
 }
 

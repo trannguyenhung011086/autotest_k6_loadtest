@@ -25,16 +25,22 @@ export let HealthBeautyReqs = new Counter('Get health beauty Requests')
 export let HomeLifeStyleReqs = new Counter('Get home life style Requests')
 
 let duration = 100
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
         'Get top menu Duration': [`p(95)<${duration}`],
+        'Get top menu Checks': [`rate<${rate}`],
         'Get apparel Duration': [`p(95)<${duration}`],
+        'Get apparel Checks': [`rate<${rate}`],
         'Get bags shoes Duration': [`p(95)<${duration}`],
+        'Get bags shoes Checks': [`rate<${rate}`],
         'Get accessories Duration': [`p(95)<${duration}`],
+        'Get accessories Checks': [`rate<${rate}`],
         'Get health beauty Duration': [`p(95)<${duration}`],
-        'Get home life style Duration': [`p(95)<${duration}`]
+        'Get health beauty Checks': [`rate<${rate}`],
+        'Get home life style Duration': [`p(95)<${duration}`],
+        'Get home life style Checks': [`rate<${rate}`]
     }
 }
 

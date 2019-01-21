@@ -13,12 +13,14 @@ export let GetOrdersReqs = new Counter('Get orders Requests')
 export let GetOrderReqs = new Counter('Get an order Requests')
 
 let duration = 500
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
         'Get orders Duration': [`p(95)<${duration}`],
-        'Get an order Duration': [`p(95)<${duration}`]
+        'Get orders Checks': [`rate<${rate}`],
+        'Get an order Duration': [`p(95)<${duration}`],
+        'Get an order Checks': [`rate<${rate}`]
     }
 }
 

@@ -8,11 +8,12 @@ export let SignInChecks = new Rate('Sign in Checks')
 export let SignInReqs = new Counter('Sign in Requests')
 
 let duration = 500
+let rate = 0.05
+
 export let options = {
-    vus: 10,
-    duration: '30s',
     thresholds: {
-        'Sign in Duration': [`p(95)<${duration}`]
+        'Sign in Duration': [`p(95)<${duration}`],
+        'Sign in Checks': [`rate<${rate}`]
     }
 }
 
