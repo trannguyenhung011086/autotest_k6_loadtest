@@ -1,4 +1,5 @@
 import { config, globalChecks } from '../common/index.js'
+import * as helper from '../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -46,10 +47,8 @@ export let options = {
 }
 
 export function setup() {
-    let res = http.post(__ENV.HOST + config.api.signIn, {
-        'email': config.testAccount.email, 'password': config.testAccount.password
-    })
-    return { cookies: JSON.stringify(res.cookies) }
+    let userCookies = helper.getCookies()
+    return { cookies: userCookies }
 }
 
 export default function (data) {

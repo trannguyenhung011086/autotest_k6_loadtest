@@ -1,4 +1,5 @@
 import { config, globalChecks } from '../common/index.js'
+import * as helper from '../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -25,28 +26,20 @@ export let options = {
 }
 
 export function setup() {
-    let requests = {
-        'ongoing': __ENV.HOST + config.api.currentSales,
-        'upcoming': __ENV.HOST + config.api.upcomingSales
-    }
-    let res = http.batch(requests)
-
-    return {
-        ongoing: res['ongoing'].body,
-        upcoming: res['upcoming'].body
-    }
+    let saleList = helper.getSales()
+    return { sales: saleList }
 }
 
 export default function (data) {
     group('GET / get ongoing sale API', () => {
-        let sales = JSON.parse(data.ongoing)
+        let sales = JSON.parse(data.sales.ongoing)
         let random = Math.floor(Math.random() * sales.length)
 
         let res = http.get(__ENV.HOST + config.api.sales + sales[random].id)
         console.log('ongoing sale: ' + sales[random].title + ' ' + sales[random].id)
 
         let checkRes = globalChecks(res, duration)
-        
+
         GetOngoingSaleFailRate.add(!checkRes)
         GetOngoingSaleDuration.add(res.timings.duration)
         GetOngoingSaleReqs.add(1)
@@ -55,14 +48,14 @@ export default function (data) {
     })
 
     group('GET / get upcoming sale API', () => {
-        let dates = JSON.parse(data.upcoming)
+        let dates = JSON.parse(data.sales.upcoming)
         let random = Math.floor(Math.random() * dates[0].sales.length)
 
         let res = http.get(__ENV.HOST + config.api.upcomingSale + dates[0].sales[random].id)
         console.log('upcoming sale: ' + dates[0].sales[random].title + ' ' + dates[0].sales[random].id)
 
         let checkRes = globalChecks(res, duration)
-        
+
         GetUpcomingSaleFailRate.add(!checkRes)
         GetUpcomingSaleDuration.add(res.timings.duration)
         GetUpcomingSaleReqs.add(1)

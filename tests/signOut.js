@@ -1,4 +1,5 @@
 import { config, globalChecks } from '../common/index.js'
+import * as helper from '../common/helper.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -17,20 +18,22 @@ export let options = {
     }
 }
 
-const users = JSON.parse(open('../common/users.json'))
+export function setup() {
+    let userCookies = helper.getCookies()
+    return { cookies: userCookies }
+}
 
 export default function () {
-    for (let user of users) {
-        let res = http.post(__ENV.HOST + config.api.signOut, {
-            "email": user.email, "password": user.password
-        })
+    let jar = http.cookieJar()
+    jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data.cookies)['leflair.connect.sid'][0].value)
 
-        let checkRes = globalChecks(res, duration)
-        
-        SignOutFailRate.add(!checkRes)
-        SignOutDuration.add(res.timings.duration)
-        SignOutReqs.add(1)
-    }
+    let res = http.get(__ENV.HOST + config.api.signOut)
+
+    let checkRes = globalChecks(res, duration)
+
+    SignOutFailRate.add(!checkRes)
+    SignOutDuration.add(res.timings.duration)
+    SignOutReqs.add(1)
 
     sleep(1)
 }

@@ -1,4 +1,5 @@
 import { config, globalChecks } from '../common/index.js'
+import * as helper from '../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -30,55 +31,34 @@ export let options = {
 }
 
 export function setup() {
-    let res = http.get(__ENV.HOST + config.api.todaySales)
-    let sales = JSON.parse(res.body)
-    let sale = http.get(__ENV.HOST + config.api.sales + sales[0].id)
-    let products = (JSON.parse(sale.body)).products
-    let product = http.get(__ENV.HOST + config.api.product + products[0].id)
-
-    return product.body
+    let productInfo = helper.getProduct()
+    return { product: productInfo }
 }
 
 export default function (data) {
-    group('POST / add to cart API', () => {
-        let res = http.post(__ENV.HOST + config.api.cart,
-            { "productId": JSON.parse(data).products[0].id })
+    let addCart = http.post(__ENV.HOST + config.api.cart,
+        { "productId": JSON.parse(data.product).products[0].id })
+    let checkAdd = globalChecks(addCart, duration)
 
-        let checkRes = globalChecks(res, duration)
-        
-        AddCartFailRate.add(!checkRes)
-        AddCartDuration.add(res.timings.duration)
-        AddCartReqs.add(1)
+    AddCartFailRate.add(!checkAdd)
+    AddCartDuration.add(addCart.timings.duration)
+    AddCartReqs.add(1)
 
-        sleep(1)
-    })
 
-    group('PUT / update cart API', () => {
-        let addCart = http.post(__ENV.HOST + config.api.cart,
-            { "productId": JSON.parse(data).products[0].id })
-        let res = http.put(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id,
-            { "quantity": "2" })
+    let updateCart = http.put(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id,
+        { "quantity": "2" })
+    let checkUpdate = globalChecks(updateCart, duration)
 
-        let checkRes = globalChecks(res, duration)
-        
-        UpdateCartFailRate.add(!checkRes)
-        UpdateCartDuration.add(res.timings.duration)
-        UpdateCartReqs.add(1)
+    UpdateCartFailRate.add(!checkUpdate)
+    UpdateCartDuration.add(updateCart.timings.duration)
+    UpdateCartReqs.add(1)
 
-        sleep(1)
-    })
+    let removeCart = http.del(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id)
+    let checkRemove = globalChecks(removeCart, duration)
 
-    group('DELETE / remove from cart API', () => {
-        let addCart = http.post(__ENV.HOST + config.api.cart,
-            { "productId": JSON.parse(data).products[0].id })
-        let res = http.del(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id)
+    RemoveCartFailRate.add(!checkRemove)
+    RemoveCartDuration.add(removeCart.timings.duration)
+    RemoveCartReqs.add(1)
 
-        let checkRes = globalChecks(res, duration)
-        
-        RemoveCartFailRate.add(!checkRes)
-        RemoveCartDuration.add(res.timings.duration)
-        RemoveCartReqs.add(1)
-
-        sleep(1)
-    })
+    sleep(1)
 }

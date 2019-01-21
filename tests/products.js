@@ -1,4 +1,5 @@
 import { config, globalChecks } from '../common/index.js'
+import * as helper from '../common/helper.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -18,21 +19,19 @@ export let options = {
 }
 
 export function setup() {
-    let res = http.get(__ENV.HOST + config.api.todaySales)
-    let sales = JSON.parse(res.body)
-    let sale = http.get(__ENV.HOST + config.api.sales + sales[0].id)
-    return sale.body
+    let saleInfo = helper.getSale()
+    return { sale: saleInfo }
 }
 
 export default function (data) {
-    let products = JSON.parse(data).products
+    let products = JSON.parse(data.sale).products
     let random = Math.floor(Math.random() * products.length)
 
     let res = http.get(__ENV.HOST + config.api.product + products[random].id)
     console.log('product: ' + (JSON.parse(res.body)).title + ' ' + (JSON.parse(res.body)).id)
 
     let checkRes = globalChecks(res, duration)
-    
+
     GetProductFailRate.add(!checkRes)
     GetProductDuration.add(res.timings.duration)
     GetProductReqs.add(1)

@@ -1,4 +1,5 @@
 import { config, globalChecks } from '../common/index.js'
+import * as helper from '../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -30,18 +31,8 @@ export let options = {
 }
 
 export function setup() {
-    let brandList = []
-    let res = http.get(__ENV.HOST + config.api.brands)
-    res.body = JSON.parse(res.body)
-
-    for (let item of Object.keys(res.body)) {
-        let list = res.body[item]
-        for (let listItem of list) {
-            brandList.push(listItem)
-        }
-    }
-    console.log('total brands: ' + brandList.length)
-    return brandList
+    let brandList = helper.getBrandList()
+    return { brands: brandList }
 }
 
 export default function (data) {
@@ -49,7 +40,7 @@ export default function (data) {
         let res = http.get(__ENV.HOST + config.api.brands)
 
         let checkRes = globalChecks(res, duration)
-        
+
         BrandsFailRate.add(!checkRes)
         BrandsDuration.add(res.timings.duration)
         BrandsReqs.add(1)
@@ -58,21 +49,21 @@ export default function (data) {
     })
 
     group('GET / brand detail API', () => {
-        let random = Math.floor(Math.random() * data.length)
+        let random = Math.floor(Math.random() * data.brands.length)
 
-        let res = http.get(__ENV.HOST + config.api.brands + data[random].id)
+        let res = http.get(__ENV.HOST + config.api.brands + data.brands[random].id)
         res.body = JSON.parse(res.body)
 
         if (res.body.products.length == 0) {
             let checkRes = globalChecks(res, duration)
-            
+
             BrandNoProductFailRate.add(!checkRes)
             BrandNoProductDuration.add(res.timings.duration)
             BrandNoProductReqs.add(1)
             console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
         } else {
             let checkRes = globalChecks(res, duration)
-            
+
             BrandWithProductFailRate.add(!checkRes)
             BrandWithProductDuration.add(res.timings.duration)
             BrandWithProductReqs.add(1)

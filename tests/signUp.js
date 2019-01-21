@@ -18,17 +18,7 @@ export let options = {
     }
 }
 
-export function setup() {
-    let res = http.post(__ENV.HOST + config.api.signIn, {
-        "email": config.testAccount.email, "password": config.testAccount.password
-    })
-    return { cookies: JSON.stringify(res.cookies) }
-}
-
 export default function () {
-    let jar = http.cookieJar()
-    jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data.cookies)['leflair.connect.sid'][0].value)
-
     let res = http.post(__ENV.HOST + config.api.signUp, {
         "email": 'QA_TECH_' + faker.internet.email(),
         "password": faker.internet.password(),
@@ -36,7 +26,7 @@ export default function () {
     })
 
     let checkRes = globalChecks(res, duration)
-    
+
     SignUpFailRate.add(!checkRes)
     SignUpDuration.add(res.timings.duration)
     SignUpReqs.add(1)
