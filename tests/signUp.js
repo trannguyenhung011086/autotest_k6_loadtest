@@ -1,10 +1,12 @@
 import { config, globalChecks } from '../common/index.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
-import { Trend } from 'k6/metrics'
+import { Trend, Rate, Counter } from 'k6/metrics'
 import faker from 'cdnjs.com/libraries/Faker'
 
 export let SignUpDuration = new Trend('Sign up Duration')
+export let SignUpChecks = new Rate('Sign up Checks')
+export let SignUpReqs = new Counter('Sign up Requests')
 
 let duration = 1000
 export let options = {
@@ -15,15 +17,26 @@ export let options = {
     }
 }
 
+export function setup() {
+    let res = http.post(__ENV.HOST + config.api.signIn, {
+        "email": config.testAccount.email, "password": config.testAccount.password
+    })
+    return JSON.stringify(res.cookies)
+}
+
 export default function () {
+    let jar = http.cookieJar()
+    jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
+
     let res = http.post(__ENV.HOST + config.api.signUp, {
         "email": 'QA_TECH_' + faker.internet.email(),
         "password": faker.internet.password(),
         "language": "vn", "gender": "M"
     })
 
-    globalChecks(res, duration)
+    globalChecks(res, duration) || SignUpChecks.add(1)
     SignUpDuration.add(res.timings.duration)
+    SignUpReqs.add(1)
 
     sleep(1)
 }
