@@ -34,7 +34,9 @@ export default function () {
         "language": "vn", "gender": "M"
     })
 
-    globalChecks(res, duration) || SignUpChecks.add(1)
+    let checkRes = globalChecks(res, duration)
+    
+    SignUpChecks.add(!checkRes)
     SignUpDuration.add(res.timings.duration)
     SignUpReqs.add(1)
 

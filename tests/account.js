@@ -37,7 +37,9 @@ export default function (data) {
     group('GET / get account API', () => {
         let res = http.get(__ENV.HOST + config.api.account)
 
-        globalChecks(res, duration) || GetAccountChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+
+        GetAccountChecks.add(!checkRes)
         GetAccountDuration.add(res.timings.duration)
         GetAccountReqs.add(1)
 
@@ -52,7 +54,9 @@ export default function (data) {
         let res = http.put(__ENV.HOST + config.api.account, JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        globalChecks(res, duration) || UpdateAccountChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        UpdateAccountChecks.add(!checkRes)
         UpdateAccountDuration.add(res.timings.duration)
         UpdateAccountReqs.add(1)
 

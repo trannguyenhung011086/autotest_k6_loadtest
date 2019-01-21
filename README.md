@@ -1,6 +1,7 @@
 # Load test with k6
 - install https://docs.k6.io/docs/installation
-- run `k6 run -e HOST=https://www.testing.leflair.io --vus 10 --duration 10s tests/signUp.js`
+- run with constant VUs: `k6 run -e HOST=https://www.testing.leflair.io --vus 10 --duration 10s tests/signUp.js`
+- run with rampage VUs: `k6 run -e HOST=https://www.testing.leflair.io --vus 10 --duration 10s --stage 3m:10,5m:10,10m:35,1m30s:0 tests/signUp.js`
 
 ## Key metrics (https://docs.k6.io/docs/result-metrics)
 - **http_reqs**: total requests generated & total request per second (more is better)

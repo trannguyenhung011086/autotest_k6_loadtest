@@ -36,7 +36,9 @@ export default function (data) {
     group('GET / get orders API', () => {
         let res = http.get(__ENV.HOST + config.api.orders)
 
-        globalChecks(res, duration) || GetOrdersChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        GetOrdersChecks.add(!checkRes)
         GetOrdersDuration.add(res.timings.duration)
         GetOrdersReqs.add(1)
 
@@ -49,7 +51,9 @@ export default function (data) {
         for (let order of JSON.parse(orders.body)) {
             let res = http.get(__ENV.HOST + config.api.orders + '/' + order.id)
 
-            globalChecks(res, duration) || GetOrderChecks.add(1)
+            let checkRes = globalChecks(res, duration)
+            
+            GetOrderChecks.add(!checkRes)
             GetOrderDuration.add(res.timings.duration)
             GetOrderReqs.add(1)
         }

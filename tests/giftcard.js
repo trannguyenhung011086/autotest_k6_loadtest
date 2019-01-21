@@ -36,7 +36,9 @@ export default function (data) {
     group('GET / check valid gift card API', () => {
         let res = http.get(__ENV.HOST + config.api.giftcard + '4TZACVS')
 
-        globalChecks(res, duration) || ValidGiftCardChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+
+        ValidGiftCardChecks.add(!checkRes)
         ValidGiftCardDuration.add(res.timings.duration)
         ValidGiftCardReqs.add(1)
 
@@ -46,7 +48,9 @@ export default function (data) {
     group('GET / check invalid gift card API', () => {
         let res = http.get(__ENV.HOST + config.api.giftcard + 'INVALID-ID')
 
-        globalChecks(res, duration, 500) || InvalidGiftCardChecks.add(1)
+        let checkRes = globalChecks(res, duration, 500)
+
+        InvalidGiftCardChecks.add(!checkRes)
         InvalidGiftCardDuration.add(res.timings.duration)
         InvalidGiftCardReqs.add(1)
 

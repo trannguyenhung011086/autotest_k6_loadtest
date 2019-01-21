@@ -41,7 +41,9 @@ export default function (data) {
         let res = http.post(__ENV.HOST + config.api.cart,
             { "productId": JSON.parse(data).products[0].id })
 
-        globalChecks(res, duration) || AddCartChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        AddCartChecks.add(!checkRes)
         AddCartDuration.add(res.timings.duration)
         AddCartReqs.add(1)
 
@@ -54,7 +56,9 @@ export default function (data) {
         let res = http.put(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id,
             { "quantity": "2" })
 
-        globalChecks(res, duration) || UpdateCartChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        UpdateCartChecks.add(!checkRes)
         UpdateCartDuration.add(res.timings.duration)
         UpdateCartReqs.add(1)
 
@@ -66,7 +70,9 @@ export default function (data) {
             { "productId": JSON.parse(data).products[0].id })
         let res = http.del(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id)
 
-        globalChecks(res, duration) || RemoveCartChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        RemoveCartChecks.add(!checkRes)
         RemoveCartDuration.add(res.timings.duration)
         RemoveCartReqs.add(1)
 

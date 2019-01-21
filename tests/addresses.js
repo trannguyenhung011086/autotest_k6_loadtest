@@ -53,7 +53,9 @@ export default function (data) {
     group('GET / get addresses API', () => {
         let res = http.get(__ENV.HOST + config.api.addresses)
 
-        globalChecks(res, duration) || GetAddressesChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        GetAddressesChecks.add(!checkRes)
         GetAddressesDuration.add(res.timings.duration)
         GetAddressesReqs.add(1)
 
@@ -82,7 +84,9 @@ export default function (data) {
         let res = http.post(__ENV.HOST + config.api.addresses, JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        globalChecks(res, duration) || AddAddressChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        AddAddressChecks.add(!checkRes)
         AddAddressDuration.add(res.timings.duration)
         AddAddressReqs.add(1)
 
@@ -116,7 +120,9 @@ export default function (data) {
             JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        globalChecks(res, duration) || UpdateShippingChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        UpdateShippingChecks.add(!checkRes)
         UpdateShippingDuration.add(res.timings.duration)
         UpdateShippingReqs.add(1)
 
@@ -149,7 +155,9 @@ export default function (data) {
             JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        globalChecks(res, duration) || UpdateBillingChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        UpdateBillingChecks.add(!checkRes)
         UpdateBillingDuration.add(res.timings.duration)
         UpdateBillingReqs.add(1)
 
@@ -162,7 +170,9 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + shipping[0].id)
 
-        globalChecks(res, duration) || DeleteShippingChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        DeleteShippingChecks.add(!checkRes)
         DeleteShippingDuration.add(res.timings.duration)
         DeleteShippingReqs.add(1)
 
@@ -175,7 +185,9 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + billing[0].id)
 
-        globalChecks(res, duration) || DeleteBillingChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        DeleteBillingChecks.add(!checkRes)
         DeleteBillingDuration.add(res.timings.duration)
         DeleteBillingReqs.add(1)
 

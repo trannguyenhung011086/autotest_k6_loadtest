@@ -24,7 +24,9 @@ export default function () {
             "email": user.email, "password": user.password
         })
 
-        globalChecks(res, duration) || SignInChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        SignInChecks.add(!checkRes)
         SignInDuration.add(res.timings.duration)
         SignInReqs.add(1)
     }

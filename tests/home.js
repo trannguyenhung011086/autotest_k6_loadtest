@@ -46,7 +46,9 @@ export default function () {
     group('GET / home API', () => {
         let res = http.get(__ENV.HOST + config.api.home)
 
-        globalChecks(res, duration) || HomeChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+
+        HomeChecks.add(!checkRes)
         HomeDuration.add(res.timings.duration)
         HomeReqs.add(1)
 
@@ -64,27 +66,33 @@ export default function () {
         }
         let res = http.batch(requests)
 
-        globalChecks(res['today'], duration) || TodayChecks.add(1)
+        let checkResToday = globalChecks(res['today'], duration)
+        TodayChecks.add(!checkResToday)
         TodayDuration.add(res['today'].timings.duration)
         TodayReqs.add(1)
 
-        globalChecks(res['current'], duration) || CurrentChecks.add(1)
+        let checkResCurrent = globalChecks(res['current'], duration)
+        CurrentChecks.add(!checkResCurrent)
         CurrentDuration.add(res['current'].timings.duration)
         CurrentReqs.add(1)
 
-        globalChecks(res['featured'], duration) || FeaturedChecks.add(1)
+        let checkResFeatured = globalChecks(res['featured'], duration)
+        FeaturedChecks.add(!checkResFeatured)
         FeaturedDuration.add(res['featured'].timings.duration)
         FeaturedReqs.add(1)
 
-        globalChecks(res['international'], duration) || InternationalChecks.add(1)
+        let checkResInternational = globalChecks(res['international'], duration)
+        InternationalChecks.add(!checkResInternational)
         InternationalDuration.add(res['international'].timings.duration)
         InternationalReqs.add(1)
 
-        globalChecks(res['potd'], duration) || PotdChecks.add(1)
+        let checkResPotd = globalChecks(res['potd'], duration)
+        PotdChecks.add(!checkResPotd)
         PotdDuration.add(res['potd'].timings.duration)
         PotdReqs.add(1)
 
-        globalChecks(res['upcoming'], duration) || UpcomingChecks.add(1)
+        let checkResUpcoming = globalChecks(res['upcoming'], duration)
+        UpcomingChecks.add(!checkResUpcoming)
         UpcomingDuration.add(res['upcoming'].timings.duration)
         UpcomingReqs.add(1)
 

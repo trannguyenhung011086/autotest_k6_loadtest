@@ -19,7 +19,9 @@ export let options = {
 export default function () {
     let res = http.get(__ENV.HOST + config.api.bestSellers)
 
-    globalChecks(res, duration) || BestSellersChecks.add(1)
+    let checkRes = globalChecks(res, duration)
+    
+    BestSellersChecks.add(!checkRes)
     BestSellersDuration.add(res.timings.duration)
     BestSellersReqs.add(1)
 

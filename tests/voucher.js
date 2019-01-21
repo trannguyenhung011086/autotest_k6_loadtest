@@ -36,7 +36,9 @@ export default function (data) {
     group('GET / check valid voucher API', () => {
         let res = http.get(__ENV.HOST + config.api.voucher + 'ABBANK')
 
-        globalChecks(res, duration) || ValidVoucherChecks.add(1)
+        let checkRes = globalChecks(res, duration)
+        
+        ValidVoucherChecks.add(!checkRes)
         ValidVoucherDuration.add(res.timings.duration)
         ValidVoucherReqs.add(1)
 
@@ -46,7 +48,9 @@ export default function (data) {
     group('GET / check invalid voucher API', () => {
         let res = http.get(__ENV.HOST + config.api.voucher + 'INVALID-ID')
 
-        globalChecks(res, duration, 400) || InvalidVoucherChecks.add(1)
+        let checkRes = globalChecks(res, duration, 400)
+        
+        InvalidVoucherChecks.add(!checkRes)
         InvalidVoucherDuration.add(res.timings.duration)
         InvalidVoucherReqs.add(1)
 
