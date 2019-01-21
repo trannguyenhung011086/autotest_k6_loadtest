@@ -10,12 +10,12 @@ export let AccessoriesDuration = new Trend('Get accessories Duration')
 export let HealthBeautyDuration = new Trend('Get health beauty Duration')
 export let HomeLifeStyleDuration = new Trend('Get home life style Duration')
 
-export let MenuChecks = new Rate('Get top menu Checks')
-export let ApparelChecks = new Rate('Get apparel Checks')
-export let BagsShoesChecks = new Rate('Get bags shoes Checks')
-export let AccessoriesChecks = new Rate('Get accessories Checks')
-export let HealthBeautyChecks = new Rate('Get health beauty Checks')
-export let HomeLifeStyleChecks = new Rate('Get home life style Checks')
+export let MenuFailRate = new Rate('Get top menu Fail Rate')
+export let ApparelFailRate = new Rate('Get apparel Fail Rate')
+export let BagsShoesFailRate = new Rate('Get bags shoes Fail Rate')
+export let AccessoriesFailRate = new Rate('Get accessories Fail Rate')
+export let HealthBeautyFailRate = new Rate('Get health beauty Fail Rate')
+export let HomeLifeStyleFailRate = new Rate('Get home life style Fail Rate')
 
 export let MenuReqs = new Counter('Get top menu Requests')
 export let ApparelReqs = new Counter('Get apparel Requests')
@@ -25,22 +25,22 @@ export let HealthBeautyReqs = new Counter('Get health beauty Requests')
 export let HomeLifeStyleReqs = new Counter('Get home life style Requests')
 
 let duration = 100
-let rate = 0.05
+let rate = 0.1
 
 export let options = {
     thresholds: {
         'Get top menu Duration': [`p(95)<${duration}`],
-        'Get top menu Checks': [`rate<${rate}`],
+        'Get top menu Fail Rate': [`rate<${rate}`],
         'Get apparel Duration': [`p(95)<${duration}`],
-        'Get apparel Checks': [`rate<${rate}`],
+        'Get apparel Fail Rate': [`rate<${rate}`],
         'Get bags shoes Duration': [`p(95)<${duration}`],
-        'Get bags shoes Checks': [`rate<${rate}`],
+        'Get bags shoes Fail Rate': [`rate<${rate}`],
         'Get accessories Duration': [`p(95)<${duration}`],
-        'Get accessories Checks': [`rate<${rate}`],
+        'Get accessories Fail Rate': [`rate<${rate}`],
         'Get health beauty Duration': [`p(95)<${duration}`],
-        'Get health beauty Checks': [`rate<${rate}`],
+        'Get health beauty Fail Rate': [`rate<${rate}`],
         'Get home life style Duration': [`p(95)<${duration}`],
-        'Get home life style Checks': [`rate<${rate}`]
+        'Get home life style Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -56,32 +56,32 @@ export default function () {
     let res = http.batch(requests)
 
     let checkResTop = globalChecks(res['top'], duration)
-    MenuChecks.add(!checkResTop)
+    MenuFailRate.add(!checkResTop)
     MenuDuration.add(res['top'].timings.duration)
     MenuReqs.add(1)
 
     let checkResApparel = globalChecks(res['apparel'], duration)
-    ApparelChecks.add(!checkResApparel)
+    ApparelFailRate.add(!checkResApparel)
     ApparelDuration.add(res['apparel'].timings.duration)
     ApparelReqs.add(1)
 
     let checkResBags = globalChecks(res['bags'], duration)
-    BagsShoesChecks.add(!checkResBags)
+    BagsShoesFailRate.add(!checkResBags)
     BagsShoesDuration.add(res['bags'].timings.duration)
     BagsShoesReqs.add(1)
 
     let checkResAccessories = globalChecks(res['accessories'], duration)
-    AccessoriesChecks.add(!checkResAccessories)
+    AccessoriesFailRate.add(!checkResAccessories)
     AccessoriesDuration.add(res['accessories'].timings.duration)
     AccessoriesReqs.add(1)
 
     let checkResHealth = globalChecks(res['health'], duration)
-    HealthBeautyChecks.add(!checkResHealth)
+    HealthBeautyFailRate.add(!checkResHealth)
     HealthBeautyDuration.add(res['health'].timings.duration)
     HealthBeautyReqs.add(1)
 
     let checkResHome = globalChecks(res['home'], duration)
-    HomeLifeStyleChecks.add(!checkResHome)
+    HomeLifeStyleFailRate.add(!checkResHome)
     HomeLifeStyleDuration.add(res['home'].timings.duration)
     HomeLifeStyleReqs.add(1)
 

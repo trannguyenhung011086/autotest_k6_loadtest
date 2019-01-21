@@ -7,25 +7,25 @@ export let BrandsDuration = new Trend('Brands Duration')
 export let BrandNoProductDuration = new Trend('Brand with no product Duration')
 export let BrandWithProductDuration = new Trend('Brand with products Duration')
 
-export let BrandsChecks = new Rate('Brands Checks')
-export let BrandNoProductChecks = new Rate('Brand with no product Checks')
-export let BrandWithProductChecks = new Rate('Brand with products Checks')
+export let BrandsFailRate = new Rate('Brands Fail Rate')
+export let BrandNoProductFailRate = new Rate('Brand with no product Fail Rate')
+export let BrandWithProductFailRate = new Rate('Brand with products Fail Rate')
 
 export let BrandsReqs = new Counter('Brands Requests')
 export let BrandNoProductReqs = new Counter('Brand with no product Requests')
 export let BrandWithProductReqs = new Counter('Brand with products Requests')
 
 let duration = 500
-let rate = 0.05
+let rate = 0.1
 
 export let options = {
     thresholds: {
         'Brands Duration': [`p(95)<${duration}`],
-        'Brands Checks': [`rate<${rate}`],
+        'Brands Fail Rate': [`rate<${rate}`],
         'Brand with no product Duration': [`p(95)<${duration}`],
-        'Brand with no product Checks': [`rate<${rate}`],
+        'Brand with no product Fail Rate': [`rate<${rate}`],
         'Brand with products Duration': [`p(95)<${duration}`],
-        'Brand with products Checks': [`rate<${rate}`]
+        'Brand with products Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -50,7 +50,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        BrandsChecks.add(!checkRes)
+        BrandsFailRate.add(!checkRes)
         BrandsDuration.add(res.timings.duration)
         BrandsReqs.add(1)
 
@@ -66,14 +66,14 @@ export default function (data) {
         if (res.body.products.length == 0) {
             let checkRes = globalChecks(res, duration)
             
-            BrandNoProductChecks.add(!checkRes)
+            BrandNoProductFailRate.add(!checkRes)
             BrandNoProductDuration.add(res.timings.duration)
             BrandNoProductReqs.add(1)
             console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
         } else {
             let checkRes = globalChecks(res, duration)
             
-            BrandWithProductChecks.add(!checkRes)
+            BrandWithProductFailRate.add(!checkRes)
             BrandWithProductDuration.add(res.timings.duration)
             BrandWithProductReqs.add(1)
             console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')

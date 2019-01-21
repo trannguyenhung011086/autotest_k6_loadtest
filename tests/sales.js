@@ -6,21 +6,21 @@ import { Trend, Rate, Counter } from 'k6/metrics'
 export let GetOngoingSaleDuration = new Trend('Get ongoing sale Duration')
 export let GetUpcomingSaleDuration = new Trend('Get upcoming sale Duration')
 
-export let GetOngoingSaleChecks = new Rate('Get ongoing sale Checks')
-export let GetUpcomingSaleChecks = new Rate('Get upcoming sale Checks')
+export let GetOngoingSaleFailRate = new Rate('Get ongoing sale Fail Rate')
+export let GetUpcomingSaleFailRate = new Rate('Get upcoming sale Fail Rate')
 
 export let GetOngoingSaleReqs = new Counter('Get ongoing sale Requests')
 export let GetUpcomingSaleReqs = new Counter('Get upcoming sale Requests')
 
 let duration = 300
-let rate = 0.05
+let rate = 0.1
 
 export let options = {
     thresholds: {
         'Get ongoing sale Duration': [`p(95)<${duration}`],
-        'Get ongoing sale Checks': [`rate<${rate}`],
+        'Get ongoing sale Fail Rate': [`rate<${rate}`],
         'Get upcoming sale Duration': [`p(95)<${duration}`],
-        'Get upcoming sale Checks': [`rate<${rate}`]
+        'Get upcoming sale Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -47,7 +47,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        GetOngoingSaleChecks.add(!checkRes)
+        GetOngoingSaleFailRate.add(!checkRes)
         GetOngoingSaleDuration.add(res.timings.duration)
         GetOngoingSaleReqs.add(1)
 
@@ -63,7 +63,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        GetUpcomingSaleChecks.add(!checkRes)
+        GetUpcomingSaleFailRate.add(!checkRes)
         GetUpcomingSaleDuration.add(res.timings.duration)
         GetUpcomingSaleReqs.add(1)
 

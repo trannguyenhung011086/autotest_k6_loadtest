@@ -4,16 +4,16 @@ import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let GetProductDuration = new Trend('Get product Duration')
-export let GetProductChecks = new Rate('Get product Checks')
+export let GetProductFailRate = new Rate('Get product Fail Rate')
 export let GetProductReqs = new Counter('Get product Requests')
 
 let duration = 300
-let rate = 0.05
+let rate = 0.1
 
 export let options = {
     thresholds: {
         'Get product Duration': [`p(95)<${duration}`],
-        'Get product Checks': [`rate<${rate}`]
+        'Get product Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -33,7 +33,7 @@ export default function (data) {
 
     let checkRes = globalChecks(res, duration)
     
-    GetProductChecks.add(!checkRes)
+    GetProductFailRate.add(!checkRes)
     GetProductDuration.add(res.timings.duration)
     GetProductReqs.add(1)
 

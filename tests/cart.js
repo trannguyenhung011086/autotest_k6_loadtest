@@ -7,25 +7,25 @@ export let AddCartDuration = new Trend('Add cart Duration')
 export let UpdateCartDuration = new Trend('Update cart Duration')
 export let RemoveCartDuration = new Trend('Remove cart Duration')
 
-export let AddCartChecks = new Rate('Add cart Checks')
-export let UpdateCartChecks = new Rate('Update cart Checks')
-export let RemoveCartChecks = new Rate('Remove cart Checks')
+export let AddCartFailRate = new Rate('Add cart Fail Rate')
+export let UpdateCartFailRate = new Rate('Update cart Fail Rate')
+export let RemoveCartFailRate = new Rate('Remove cart Fail Rate')
 
 export let AddCartReqs = new Counter('Add cart Requests')
 export let UpdateCartReqs = new Counter('Update cart Requests')
 export let RemoveCartReqs = new Counter('Remove cart Requests')
 
 let duration = 300
-let rate = 0.05
+let rate = 0.1
 
 export let options = {
     thresholds: {
         'Add cart Duration': [`p(95)<${duration}`],
-        'Add cart Checks': [`rate<${rate}`],
+        'Add cart Fail Rate': [`rate<${rate}`],
         'Update cart Duration': [`p(95)<${duration}`],
-        'Update cart Checks': [`rate<${rate}`],
+        'Update cart Fail Rate': [`rate<${rate}`],
         'Remove cart Duration': [`p(95)<${duration}`],
-        'Remove cart Checks': [`rate<${rate}`]
+        'Remove cart Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -46,7 +46,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        AddCartChecks.add(!checkRes)
+        AddCartFailRate.add(!checkRes)
         AddCartDuration.add(res.timings.duration)
         AddCartReqs.add(1)
 
@@ -61,7 +61,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        UpdateCartChecks.add(!checkRes)
+        UpdateCartFailRate.add(!checkRes)
         UpdateCartDuration.add(res.timings.duration)
         UpdateCartReqs.add(1)
 
@@ -75,7 +75,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        RemoveCartChecks.add(!checkRes)
+        RemoveCartFailRate.add(!checkRes)
         RemoveCartDuration.add(res.timings.duration)
         RemoveCartReqs.add(1)
 

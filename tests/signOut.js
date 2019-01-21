@@ -4,16 +4,16 @@ import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let SignOutDuration = new Trend('Sign out Duration')
-export let SignOutChecks = new Rate('Sign out Checks')
+export let SignOutFailRate = new Rate('Sign out Fail Rate')
 export let SignOutReqs = new Counter('Sign out Requests')
 
 let duration = 500
-let rate = 0.05
+let rate = 0.1
 
 export let options = {
     thresholds: {
         'Sign out Duration': [`p(95)<${duration}`],
-        'Sign out Checks': [`rate<${rate}`]
+        'Sign out Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -27,7 +27,7 @@ export default function () {
 
         let checkRes = globalChecks(res, duration)
         
-        SignOutChecks.add(!checkRes)
+        SignOutFailRate.add(!checkRes)
         SignOutDuration.add(res.timings.duration)
         SignOutReqs.add(1)
     }

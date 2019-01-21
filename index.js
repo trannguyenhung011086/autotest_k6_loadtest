@@ -1,61 +1,44 @@
 import config from './common/config.js'
 import http from 'k6/http'
-import { group, sleep, check } from 'k6'
-import BestSellerTest from './tests/bestSellers.js'
-import CateMenuTest from './tests/cateMenu.js'
+import { group, sleep } from 'k6'
 
-// export function setup() {
-//     let res = http.post(__ENV.HOST + config.api.signIn, {
-//         "email": config.testAccount.email, "password": config.testAccount.password
-//     })
-//     return JSON.stringify(res.cookies)
+import AccountTest from './tests/account.js'
+import { options as AccountOptions } from './tests/account.js'
+import AddressTest from './tests/addresses.js'
+import { options as AddressOptions } from './tests/addresses.js'
+import BestSellersTest from './tests/bestSellers.js'
+import { options as BestSellersOptions } from './tests/bestSellers.js'
 
-//     let brandList = []
-//     let res = http.get(__ENV.HOST + config.api.brands)
-//     res.body = JSON.parse(res.body)
+export function setup() {
+    let res = http.post(__ENV.HOST + config.api.signIn, {
+        "email": config.testAccount.email, "password": config.testAccount.password
+    })
+    return {
+        cookies: JSON.stringify(res.cookies)
+    }
+}
 
-//     for (let item of Object.keys(res.body)) {
-//         let list = res.body[item]
-//         for (let listItem of list) {
-//             brandList.push(listItem)
-//         }
-//     }
-//     console.log('total brands: ' + brandList.length)
-//     return brandList
+let optionsSum = {}
+Object.entries(AccountOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
+Object.entries(AddressOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
+Object.entries(BestSellersOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 
-//     let res = http.get(__ENV.HOST + config.api.todaySales)
-//     let sales = JSON.parse(res.body)
-//     let sale = http.get(__ENV.HOST + config.api.sales + sales[0].id)
-//     let products = (JSON.parse(sale.body)).products
-//     let product = http.get(__ENV.HOST + config.api.product + products[0].id)
+export let options = {
+    thresholds: optionsSum
+}
 
-//     return product.body
-
-//     let res = http.get(__ENV.HOST + config.api.todaySales)
-//     let sales = JSON.parse(res.body)
-//     let sale = http.get(__ENV.HOST + config.api.sales + sales[0].id)
-//     return sale.body
-
-//     let requests = {
-//         'ongoing': __ENV.HOST + config.api.currentSales,
-//         'upcoming': __ENV.HOST + config.api.upcomingSales
-//     }
-//     let res = http.batch(requests)
-
-//     return {
-//         ongoing: res['ongoing'].body,
-//         upcoming: res['upcoming'].body
-//     }
-// }
-
-export default () => {
-    group('Best sellers', () => {
-        BestSellerTest()
+export default (data) => {
+    group('Account', () => {
+        AccountTest(data)
     })
 
-    group('Category menu', () => {
-        CateMenuTest()
+    group('Address', () => {
+        AddressTest(data)
     })
-    
+
+    group('Bestsellers', () => {
+        BestSellersTest()
+    })
+
     sleep(1)
 }

@@ -6,21 +6,21 @@ import { Trend, Rate, Counter } from 'k6/metrics'
 export let GetOrdersDuration = new Trend('Get orders Duration')
 export let GetOrderDuration = new Trend('Get an order Duration')
 
-export let GetOrdersChecks = new Rate('Get orders Checks')
-export let GetOrderChecks = new Rate('Get an order Checks')
+export let GetOrdersFailRate = new Rate('Get orders Fail Rate')
+export let GetOrderFailRate = new Rate('Get an order Fail Rate')
 
 export let GetOrdersReqs = new Counter('Get orders Requests')
 export let GetOrderReqs = new Counter('Get an order Requests')
 
 let duration = 500
-let rate = 0.05
+let rate = 0.1
 
 export let options = {
     thresholds: {
         'Get orders Duration': [`p(95)<${duration}`],
-        'Get orders Checks': [`rate<${rate}`],
+        'Get orders Fail Rate': [`rate<${rate}`],
         'Get an order Duration': [`p(95)<${duration}`],
-        'Get an order Checks': [`rate<${rate}`]
+        'Get an order Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -28,19 +28,19 @@ export function setup() {
     let res = http.post(__ENV.HOST + config.api.signIn, {
         "email": config.testAccount.email, "password": config.testAccount.password
     })
-    return JSON.stringify(res.cookies)
+    return { cookies: JSON.stringify(res.cookies) }
 }
 
 export default function (data) {
     let jar = http.cookieJar()
-    jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
+    jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data.cookies)['leflair.connect.sid'][0].value)
 
     group('GET / get orders API', () => {
         let res = http.get(__ENV.HOST + config.api.orders)
 
         let checkRes = globalChecks(res, duration)
         
-        GetOrdersChecks.add(!checkRes)
+        GetOrdersFailRate.add(!checkRes)
         GetOrdersDuration.add(res.timings.duration)
         GetOrdersReqs.add(1)
 
@@ -55,7 +55,7 @@ export default function (data) {
 
             let checkRes = globalChecks(res, duration)
             
-            GetOrderChecks.add(!checkRes)
+            GetOrderFailRate.add(!checkRes)
             GetOrderDuration.add(res.timings.duration)
             GetOrderReqs.add(1)
         }

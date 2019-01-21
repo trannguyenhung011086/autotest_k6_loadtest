@@ -11,12 +11,12 @@ export let UpdateBillingDuration = new Trend('Update billing Duration')
 export let DeleteShippingDuration = new Trend('Delete shipping Duration')
 export let DeleteBillingDuration = new Trend('Delete billing Duration')
 
-export let GetAddressesChecks = new Rate('Get addressess Checks')
-export let AddAddressChecks = new Rate('Add address Checks')
-export let UpdateShippingChecks = new Rate('Update shipping Checks')
-export let UpdateBillingChecks = new Rate('Update billing Checks')
-export let DeleteShippingChecks = new Rate('Delete shipping Checks')
-export let DeleteBillingChecks = new Rate('Delete billing Checks')
+export let GetAddressesFailRate = new Rate('Get addressess Fail Rate')
+export let AddAddressFailRate = new Rate('Add address Fail Rate')
+export let UpdateShippingFailRate = new Rate('Update shipping Fail Rate')
+export let UpdateBillingFailRate = new Rate('Update billing Fail Rate')
+export let DeleteShippingFailRate = new Rate('Delete shipping Fail Rate')
+export let DeleteBillingFailRate = new Rate('Delete billing Fail Rate')
 
 export let GetAddressesReqs = new Counter('Get addresses Requests')
 export let AddAddressReqs = new Counter('Add address Requests')
@@ -26,22 +26,22 @@ export let DeleteShippingReqs = new Counter('Delete shipping Requests')
 export let DeleteBillingReqs = new Counter('Delete billing Requests')
 
 let duration = 500
-let rate = 0.05
+let rate = 0.1
 
 export let options = {
     thresholds: {
         'Get addresses Duration': [`p(95)<${duration}`],
-        'Get addresses Checks': [`rate<${rate}`],
+        'Get addresses Fail Rate': [`rate<${rate}`],
         'Add address Duration': [`p(95)<${duration}`],
-        'Add address Checks': [`rate<${rate}`],
+        'Add address Fail Rate': [`rate<${rate}`],
         'Update shipping Duration': [`p(95)<${duration}`],
-        'Update shipping Checks': [`rate<${rate}`],
+        'Update shipping Fail Rate': [`rate<${rate}`],
         'Update billing Duration': [`p(95)<${duration}`],
-        'Update billing Checks': [`rate<${rate}`],
+        'Update billing Fail Rate': [`rate<${rate}`],
         'Delete shipping Duration': [`p(95)<${duration}`],
-        'Delete shipping Checks': [`rate<${rate}`],
+        'Delete shipping Fail Rate': [`rate<${rate}`],
         'Delete billing Duration': [`p(95)<${duration}`],
-        'Delete billing Checks': [`rate<${rate}`]
+        'Delete billing Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -49,19 +49,19 @@ export function setup() {
     let res = http.post(__ENV.HOST + config.api.signIn, {
         'email': config.testAccount.email, 'password': config.testAccount.password
     })
-    return JSON.stringify(res.cookies)
+    return { cookies: JSON.stringify(res.cookies) }
 }
 
 export default function (data) {
     let jar = http.cookieJar()
-    jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data)['leflair.connect.sid'][0].value)
+    jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data.cookies)['leflair.connect.sid'][0].value)
 
     group('GET / get addresses API', () => {
         let res = http.get(__ENV.HOST + config.api.addresses)
 
         let checkRes = globalChecks(res, duration)
         
-        GetAddressesChecks.add(!checkRes)
+        GetAddressesFailRate.add(!checkRes)
         GetAddressesDuration.add(res.timings.duration)
         GetAddressesReqs.add(1)
 
@@ -92,7 +92,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        AddAddressChecks.add(!checkRes)
+        AddAddressFailRate.add(!checkRes)
         AddAddressDuration.add(res.timings.duration)
         AddAddressReqs.add(1)
 
@@ -128,7 +128,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        UpdateShippingChecks.add(!checkRes)
+        UpdateShippingFailRate.add(!checkRes)
         UpdateShippingDuration.add(res.timings.duration)
         UpdateShippingReqs.add(1)
 
@@ -163,7 +163,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        UpdateBillingChecks.add(!checkRes)
+        UpdateBillingFailRate.add(!checkRes)
         UpdateBillingDuration.add(res.timings.duration)
         UpdateBillingReqs.add(1)
 
@@ -178,7 +178,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        DeleteShippingChecks.add(!checkRes)
+        DeleteShippingFailRate.add(!checkRes)
         DeleteShippingDuration.add(res.timings.duration)
         DeleteShippingReqs.add(1)
 
@@ -193,7 +193,7 @@ export default function (data) {
 
         let checkRes = globalChecks(res, duration)
         
-        DeleteBillingChecks.add(!checkRes)
+        DeleteBillingFailRate.add(!checkRes)
         DeleteBillingDuration.add(res.timings.duration)
         DeleteBillingReqs.add(1)
 

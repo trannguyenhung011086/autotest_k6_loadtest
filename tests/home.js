@@ -3,13 +3,13 @@ import http from 'k6/http'
 import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
-export let HomeChecks = new Rate('Home Checks')
-export let TodayChecks = new Rate('Today sales Checks')
-export let CurrentChecks = new Rate('Current sales Checks')
-export let FeaturedChecks = new Rate('Featured sales Checks')
-export let InternationalChecks = new Rate('International sales Checks')
-export let PotdChecks = new Rate('POTD sales Checks')
-export let UpcomingChecks = new Rate('Upcoming sales Checks')
+export let HomeFailRate = new Rate('Home Fail Rate')
+export let TodayFailRate = new Rate('Today sales Fail Rate')
+export let CurrentFailRate = new Rate('Current sales Fail Rate')
+export let FeaturedFailRate = new Rate('Featured sales Fail Rate')
+export let InternationalFailRate = new Rate('International sales Fail Rate')
+export let PotdFailRate = new Rate('POTD sales Fail Rate')
+export let UpcomingFailRate = new Rate('Upcoming sales Fail Rate')
 
 export let HomeDuration = new Trend('Home Duration')
 export let TodayDuration = new Trend('Today sales Duration')
@@ -28,24 +28,24 @@ export let PotdReqs = new Counter('POTD sales Requests')
 export let UpcomingReqs = new Counter('Upcoming sales Requests')
 
 let duration = 500
-let rate = 0.05
+let rate = 0.1
 
 export let options = {
     thresholds: {
         'Home Duration': [`p(95)<${duration}`],
-        'Home Checks': [`rate<${rate}`],
+        'Home Fail Rate': [`rate<${rate}`],
         'Today sales Duration': [`p(95)<${duration}`],
-        'Today sales Checks': [`rate<${rate}`],
+        'Today sales Fail Rate': [`rate<${rate}`],
         'Current sales Duration': [`p(95)<${duration}`],
-        'Current sales Checks': [`rate<${rate}`],
+        'Current sales Fail Rate': [`rate<${rate}`],
         'Featured sales Duration': [`p(95)<${duration}`],
-        'Featured sales Checks': [`rate<${rate}`],
+        'Featured sales Fail Rate': [`rate<${rate}`],
         'International sales Duration': [`p(95)<${duration}`],
-        'International sales Checks': [`rate<${rate}`],
+        'International sales Fail Rate': [`rate<${rate}`],
         'POTD sales Duration': [`p(95)<${duration}`],
-        'POTD sales Checks': [`rate<${rate}`],
+        'POTD sales Fail Rate': [`rate<${rate}`],
         'Upcoming sales Duration': [`p(95)<${duration}`],
-        'Upcoming sales Checks': [`rate<${rate}`]
+        'Upcoming sales Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -55,7 +55,7 @@ export default function () {
 
         let checkRes = globalChecks(res, duration)
 
-        HomeChecks.add(!checkRes)
+        HomeFailRate.add(!checkRes)
         HomeDuration.add(res.timings.duration)
         HomeReqs.add(1)
 
@@ -74,32 +74,32 @@ export default function () {
         let res = http.batch(requests)
 
         let checkResToday = globalChecks(res['today'], duration)
-        TodayChecks.add(!checkResToday)
+        TodayFailRate.add(!checkResToday)
         TodayDuration.add(res['today'].timings.duration)
         TodayReqs.add(1)
 
         let checkResCurrent = globalChecks(res['current'], duration)
-        CurrentChecks.add(!checkResCurrent)
+        CurrentFailRate.add(!checkResCurrent)
         CurrentDuration.add(res['current'].timings.duration)
         CurrentReqs.add(1)
 
         let checkResFeatured = globalChecks(res['featured'], duration)
-        FeaturedChecks.add(!checkResFeatured)
+        FeaturedFailRate.add(!checkResFeatured)
         FeaturedDuration.add(res['featured'].timings.duration)
         FeaturedReqs.add(1)
 
         let checkResInternational = globalChecks(res['international'], duration)
-        InternationalChecks.add(!checkResInternational)
+        InternationalFailRate.add(!checkResInternational)
         InternationalDuration.add(res['international'].timings.duration)
         InternationalReqs.add(1)
 
         let checkResPotd = globalChecks(res['potd'], duration)
-        PotdChecks.add(!checkResPotd)
+        PotdFailRate.add(!checkResPotd)
         PotdDuration.add(res['potd'].timings.duration)
         PotdReqs.add(1)
 
         let checkResUpcoming = globalChecks(res['upcoming'], duration)
-        UpcomingChecks.add(!checkResUpcoming)
+        UpcomingFailRate.add(!checkResUpcoming)
         UpcomingDuration.add(res['upcoming'].timings.duration)
         UpcomingReqs.add(1)
 
