@@ -3,8 +3,8 @@ import { group, sleep } from 'k6'
 
 import AccountTest from './tests/account.js'
 import { options as AccountOptions } from './tests/account.js'
-import AddressesTest from './tests/addresses.js'
-import { options as AddressesOptions } from './tests/addresses.js'
+// import AddressesTest from './tests/addresses.js'
+// import { options as AddressesOptions } from './tests/addresses.js'
 import BestSellersTest from './tests/bestSellers.js'
 import { options as BestSellersOptions } from './tests/bestSellers.js'
 import BrandsTest from './tests/brands.js'
@@ -50,7 +50,7 @@ export function setup() {
 
 let optionsSum = {}
 Object.entries(AccountOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
-Object.entries(AddressesOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
+// Object.entries(AddressesOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(BestSellersOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(BrandsOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(CartOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
@@ -74,9 +74,9 @@ export default (data) => {
         AccountTest(data)
     })
 
-    group('Addresses', () => {
-        AddressesTest(data)
-    })
+    // group('Addresses', () => {
+    //     AddressesTest(data)
+    // })
 
     group('Bestsellers', () => {
         BestSellersTest()

@@ -25,9 +25,7 @@ export default function () {
             "email": user.email, "password": user.password
         })
 
-        let checkRes = globalChecks(res, duration)
-        
-        SignInFailRate.add(!checkRes)
+        globalChecks(res, duration) || SignInFailRate.add(1)
         SignInDuration.add(res.timings.duration)
         SignInReqs.add(1)
     }

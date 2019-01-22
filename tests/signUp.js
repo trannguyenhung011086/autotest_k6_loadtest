@@ -25,9 +25,7 @@ export default function () {
         "language": "vn", "gender": "M"
     })
 
-    let checkRes = globalChecks(res, duration)
-
-    SignUpFailRate.add(!checkRes)
+    globalChecks(res, duration) || SignUpFailRate.add(1)
     SignUpDuration.add(res.timings.duration)
     SignUpReqs.add(1)
 

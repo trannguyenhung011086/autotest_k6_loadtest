@@ -29,9 +29,7 @@ export default function (data) {
 
     let res = http.get(__ENV.HOST + config.api.signOut)
 
-    let checkRes = globalChecks(res, duration)
-
-    SignOutFailRate.add(!checkRes)
+    globalChecks(res, duration) || SignOutFailRate.add(1)
     SignOutDuration.add(res.timings.duration)
     SignOutReqs.add(1)
 

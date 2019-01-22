@@ -58,9 +58,7 @@ export default function (data) {
     group('GET / get addresses API', () => {
         let res = http.get(__ENV.HOST + config.api.addresses)
 
-        let checkRes = globalChecks(res, duration)
-        
-        GetAddressesFailRate.add(!checkRes)
+        globalChecks(res, duration) || GetAddressesFailRate.add(1)
         GetAddressesDuration.add(res.timings.duration)
         GetAddressesReqs.add(1)
 
@@ -89,9 +87,7 @@ export default function (data) {
         let res = http.post(__ENV.HOST + config.api.addresses, JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        let checkRes = globalChecks(res, duration)
-        
-        AddAddressFailRate.add(!checkRes)
+        globalChecks(res, duration) || AddAddressFailRate.add(1)
         AddAddressDuration.add(res.timings.duration)
         AddAddressReqs.add(1)
 
@@ -125,9 +121,7 @@ export default function (data) {
             JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        let checkRes = globalChecks(res, duration)
-        
-        UpdateShippingFailRate.add(!checkRes)
+        globalChecks(res, duration) || UpdateShippingFailRate.add(1)
         UpdateShippingDuration.add(res.timings.duration)
         UpdateShippingReqs.add(1)
 
@@ -160,9 +154,7 @@ export default function (data) {
             JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        let checkRes = globalChecks(res, duration)
-        
-        UpdateBillingFailRate.add(!checkRes)
+        globalChecks(res, duration) || UpdateBillingFailRate.add(1)
         UpdateBillingDuration.add(res.timings.duration)
         UpdateBillingReqs.add(1)
 
@@ -175,9 +167,7 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + shipping[0].id)
 
-        let checkRes = globalChecks(res, duration)
-        
-        DeleteShippingFailRate.add(!checkRes)
+        globalChecks(res, duration) || DeleteShippingFailRate.add(1)
         DeleteShippingDuration.add(res.timings.duration)
         DeleteShippingReqs.add(1)
 
@@ -190,9 +180,7 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + billing[0].id)
 
-        let checkRes = globalChecks(res, duration)
-        
-        DeleteBillingFailRate.add(!checkRes)
+        globalChecks(res, duration) || DeleteBillingFailRate.add(1)
         DeleteBillingDuration.add(res.timings.duration)
         DeleteBillingReqs.add(1)
 

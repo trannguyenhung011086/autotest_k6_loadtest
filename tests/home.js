@@ -53,9 +53,7 @@ export default function () {
     group('GET / home API', () => {
         let res = http.get(__ENV.HOST + config.api.home)
 
-        let checkRes = globalChecks(res, duration)
-
-        HomeFailRate.add(!checkRes)
+        globalChecks(res, duration) || HomeFailRate.add(1)
         HomeDuration.add(res.timings.duration)
         HomeReqs.add(1)
 
@@ -73,33 +71,27 @@ export default function () {
         }
         let res = http.batch(requests)
 
-        let checkResToday = globalChecks(res['today'], duration)
-        TodayFailRate.add(!checkResToday)
+        globalChecks(res['today'], duration) || TodayFailRate.add(1)
         TodayDuration.add(res['today'].timings.duration)
         TodayReqs.add(1)
 
-        let checkResCurrent = globalChecks(res['current'], duration)
-        CurrentFailRate.add(!checkResCurrent)
+        globalChecks(res['current'], duration) || CurrentFailRate.add(1)
         CurrentDuration.add(res['current'].timings.duration)
         CurrentReqs.add(1)
 
-        let checkResFeatured = globalChecks(res['featured'], duration)
-        FeaturedFailRate.add(!checkResFeatured)
+        globalChecks(res['featured'], duration) || FeaturedFailRate.add(1)
         FeaturedDuration.add(res['featured'].timings.duration)
         FeaturedReqs.add(1)
 
-        let checkResInternational = globalChecks(res['international'], duration)
-        InternationalFailRate.add(!checkResInternational)
+        globalChecks(res['international'], duration) || InternationalFailRate.add(1)
         InternationalDuration.add(res['international'].timings.duration)
         InternationalReqs.add(1)
 
-        let checkResPotd = globalChecks(res['potd'], duration)
-        PotdFailRate.add(!checkResPotd)
+        globalChecks(res['potd'], duration) || PotdFailRate.add(1)
         PotdDuration.add(res['potd'].timings.duration)
         PotdReqs.add(1)
 
-        let checkResUpcoming = globalChecks(res['upcoming'], duration)
-        UpcomingFailRate.add(!checkResUpcoming)
+        globalChecks(res['upcoming'], duration) || UpcomingFailRate.add(1)
         UpcomingDuration.add(res['upcoming'].timings.duration)
         UpcomingReqs.add(1)
 

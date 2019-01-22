@@ -38,9 +38,7 @@ export default function (data) {
         let res = http.get(__ENV.HOST + config.api.sales + sales[random].id)
         console.log('ongoing sale: ' + sales[random].title + ' ' + sales[random].id)
 
-        let checkRes = globalChecks(res, duration)
-
-        GetOngoingSaleFailRate.add(!checkRes)
+        globalChecks(res, duration) || GetOngoingSaleFailRate.add(1)
         GetOngoingSaleDuration.add(res.timings.duration)
         GetOngoingSaleReqs.add(1)
 
@@ -54,9 +52,7 @@ export default function (data) {
         let res = http.get(__ENV.HOST + config.api.upcomingSale + dates[0].sales[random].id)
         console.log('upcoming sale: ' + dates[0].sales[random].title + ' ' + dates[0].sales[random].id)
 
-        let checkRes = globalChecks(res, duration)
-
-        GetUpcomingSaleFailRate.add(!checkRes)
+        globalChecks(res, duration) || GetUpcomingSaleFailRate.add(1)
         GetUpcomingSaleDuration.add(res.timings.duration)
         GetUpcomingSaleReqs.add(1)
 

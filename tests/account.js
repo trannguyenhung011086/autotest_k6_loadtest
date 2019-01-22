@@ -38,9 +38,7 @@ export default function (data) {
     group('GET / get account API', () => {
         let res = http.get(__ENV.HOST + config.api.account)
 
-        let checkRes = globalChecks(res, duration)
-
-        GetAccountFailRate.add(!checkRes)
+        globalChecks(res, duration) || GetAccountFailRate.add(1)
         GetAccountDuration.add(res.timings.duration)
         GetAccountReqs.add(1)
 
@@ -55,9 +53,7 @@ export default function (data) {
         let res = http.put(__ENV.HOST + config.api.account, JSON.stringify(body),
             { headers: { "Content-Type": "application/json" } })
 
-        let checkRes = globalChecks(res, duration)
-
-        UpdateAccountFailRate.add(!checkRes)
+        globalChecks(res, duration) || UpdateAccountFailRate.add(1)
         UpdateAccountDuration.add(res.timings.duration)
         UpdateAccountReqs.add(1)
 

@@ -55,33 +55,27 @@ export default function () {
     }
     let res = http.batch(requests)
 
-    let checkResTop = globalChecks(res['top'], duration)
-    MenuFailRate.add(!checkResTop)
+    globalChecks(res['top'], duration) || MenuFailRate.add(1)
     MenuDuration.add(res['top'].timings.duration)
     MenuReqs.add(1)
 
-    let checkResApparel = globalChecks(res['apparel'], duration)
-    ApparelFailRate.add(!checkResApparel)
+    globalChecks(res['apparel'], duration) || ApparelFailRate.add(1)
     ApparelDuration.add(res['apparel'].timings.duration)
     ApparelReqs.add(1)
 
-    let checkResBags = globalChecks(res['bags'], duration)
-    BagsShoesFailRate.add(!checkResBags)
+    globalChecks(res['bags'], duration) || BagsShoesFailRate.add(1)
     BagsShoesDuration.add(res['bags'].timings.duration)
     BagsShoesReqs.add(1)
 
-    let checkResAccessories = globalChecks(res['accessories'], duration)
-    AccessoriesFailRate.add(!checkResAccessories)
+    globalChecks(res['accessories'], duration) || AccessoriesFailRate.add(1)
     AccessoriesDuration.add(res['accessories'].timings.duration)
     AccessoriesReqs.add(1)
 
-    let checkResHealth = globalChecks(res['health'], duration)
-    HealthBeautyFailRate.add(!checkResHealth)
+    globalChecks(res['health'], duration) || HealthBeautyFailRate.add(1)
     HealthBeautyDuration.add(res['health'].timings.duration)
     HealthBeautyReqs.add(1)
 
-    let checkResHome = globalChecks(res['home'], duration)
-    HomeLifeStyleFailRate.add(!checkResHome)
+    globalChecks(res['home'], duration) || HomeLifeStyleFailRate.add(1)
     HomeLifeStyleDuration.add(res['home'].timings.duration)
     HomeLifeStyleReqs.add(1)
 

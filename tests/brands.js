@@ -39,9 +39,7 @@ export default function (data) {
     group('GET / brands API', () => {
         let res = http.get(__ENV.HOST + config.api.brands)
 
-        let checkRes = globalChecks(res, duration)
-
-        BrandsFailRate.add(!checkRes)
+        globalChecks(res, duration) || BrandsFailRate.add(1)
         BrandsDuration.add(res.timings.duration)
         BrandsReqs.add(1)
 
@@ -55,16 +53,12 @@ export default function (data) {
         res.body = JSON.parse(res.body)
 
         if (res.body.products.length == 0) {
-            let checkRes = globalChecks(res, duration)
-
-            BrandNoProductFailRate.add(!checkRes)
+            globalChecks(res, duration) || BrandNoProductFailRate.add(1)
             BrandNoProductDuration.add(res.timings.duration)
             BrandNoProductReqs.add(1)
             console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
         } else {
-            let checkRes = globalChecks(res, duration)
-
-            BrandWithProductFailRate.add(!checkRes)
+            globalChecks(res, duration) || BrandWithProductFailRate.add(1)
             BrandWithProductDuration.add(res.timings.duration)
             BrandWithProductReqs.add(1)
             console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')
