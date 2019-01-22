@@ -47,23 +47,21 @@ export default function (data) {
     })
 
     group('GET / brand detail API', () => {
-        for (let i = 0; i < 50; i++) {
-            let random = Math.floor(Math.random() * data.brands.length)
+        let random = Math.floor(Math.random() * data.brands.length)
 
-            let res = http.get(__ENV.HOST + config.api.brands + data.brands[random].id)
-            res.body = JSON.parse(res.body)
+        let res = http.get(__ENV.HOST + config.api.brands + data.brands[random].id)
+        res.body = JSON.parse(res.body)
 
-            if (res.body.products.length == 0) {
-                globalChecks(res, duration) || BrandNoProductFailRate.add(1)
-                BrandNoProductDuration.add(res.timings.duration)
-                BrandNoProductReqs.add(1)
-                console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
-            } else {
-                globalChecks(res, duration) || BrandWithProductFailRate.add(1)
-                BrandWithProductDuration.add(res.timings.duration)
-                BrandWithProductReqs.add(1)
-                console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')
-            }
+        if (res.body.products.length == 0) {
+            globalChecks(res, duration) || BrandNoProductFailRate.add(1)
+            BrandNoProductDuration.add(res.timings.duration)
+            BrandNoProductReqs.add(1)
+            // console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
+        } else {
+            globalChecks(res, duration) || BrandWithProductFailRate.add(1)
+            BrandWithProductDuration.add(res.timings.duration)
+            BrandWithProductReqs.add(1)
+            // console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')
         }
 
         sleep(1)

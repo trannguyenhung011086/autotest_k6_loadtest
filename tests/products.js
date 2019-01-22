@@ -28,7 +28,7 @@ export default function (data) {
     let random = Math.floor(Math.random() * products.length)
 
     let res = http.get(__ENV.HOST + config.api.product + products[random].id)
-    console.log('product: ' + (JSON.parse(res.body)).title + ' ' + (JSON.parse(res.body)).id)
+    // console.log('product: ' + (JSON.parse(res.body)).title + ' ' + (JSON.parse(res.body)).id)
 
     globalChecks(res, duration) || GetProductFailRate.add(1)
     GetProductDuration.add(res.timings.duration)

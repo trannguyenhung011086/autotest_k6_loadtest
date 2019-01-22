@@ -36,7 +36,7 @@ export default function (data) {
         let random = Math.floor(Math.random() * sales.length)
 
         let res = http.get(__ENV.HOST + config.api.sales + sales[random].id)
-        console.log('ongoing sale: ' + sales[random].title + ' ' + sales[random].id)
+        // console.log('ongoing sale: ' + sales[random].title + ' ' + sales[random].id)
 
         globalChecks(res, duration) || GetOngoingSaleFailRate.add(1)
         GetOngoingSaleDuration.add(res.timings.duration)
@@ -50,7 +50,7 @@ export default function (data) {
         let random = Math.floor(Math.random() * dates[0].sales.length)
 
         let res = http.get(__ENV.HOST + config.api.upcomingSale + dates[0].sales[random].id)
-        console.log('upcoming sale: ' + dates[0].sales[random].title + ' ' + dates[0].sales[random].id)
+        // console.log('upcoming sale: ' + dates[0].sales[random].title + ' ' + dates[0].sales[random].id)
 
         globalChecks(res, duration) || GetUpcomingSaleFailRate.add(1)
         GetUpcomingSaleDuration.add(res.timings.duration)
