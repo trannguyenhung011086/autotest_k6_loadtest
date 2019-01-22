@@ -23,7 +23,7 @@ export function setup() {
     return { cookies: userCookies }
 }
 
-export default function () {
+export default function (data) {
     let jar = http.cookieJar()
     jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data.cookies)['leflair.connect.sid'][0].value)
 
