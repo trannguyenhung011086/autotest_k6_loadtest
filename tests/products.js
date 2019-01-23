@@ -9,7 +9,7 @@ export let GetProductFailRate = new Rate('Get product Fail Rate')
 export let GetProductReqs = new Counter('Get product Requests')
 
 let duration = 300
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

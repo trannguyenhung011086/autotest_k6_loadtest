@@ -27,7 +27,7 @@ export let DeleteShippingReqs = new Counter('Delete shipping Requests')
 export let DeleteBillingReqs = new Counter('Delete billing Requests')
 
 let duration = 500
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

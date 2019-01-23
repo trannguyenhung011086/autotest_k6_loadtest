@@ -17,7 +17,7 @@ export let BrandNoProductReqs = new Counter('Brand with no product Requests')
 export let BrandWithProductReqs = new Counter('Brand with products Requests')
 
 let duration = 500
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

@@ -28,7 +28,7 @@ export let PotdReqs = new Counter('POTD sales Requests')
 export let UpcomingReqs = new Counter('Upcoming sales Requests')
 
 let duration = 500
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

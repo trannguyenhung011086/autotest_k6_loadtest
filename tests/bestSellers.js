@@ -8,7 +8,7 @@ export let BestSellersFailRate = new Rate('Best sellers Fail Rate')
 export let BestSellersReqs = new Counter('Best sellers Requests')
 
 let duration = 500
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

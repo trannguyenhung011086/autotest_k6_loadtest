@@ -14,7 +14,7 @@ export let ValidVoucherReqs = new Counter('Check valid voucher Requests')
 export let InvalidVoucherReqs = new Counter('Check invalid voucher Requests')
 
 let duration = 200
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

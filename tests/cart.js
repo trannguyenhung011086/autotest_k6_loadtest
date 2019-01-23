@@ -17,7 +17,7 @@ export let UpdateCartReqs = new Counter('Update cart Requests')
 export let RemoveCartReqs = new Counter('Remove cart Requests')
 
 let duration = 300
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

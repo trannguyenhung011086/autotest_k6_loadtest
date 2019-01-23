@@ -14,7 +14,7 @@ export let GetOngoingSaleReqs = new Counter('Get ongoing sale Requests')
 export let GetUpcomingSaleReqs = new Counter('Get upcoming sale Requests')
 
 let duration = 300
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

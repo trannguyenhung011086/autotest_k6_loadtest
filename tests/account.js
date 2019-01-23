@@ -15,7 +15,7 @@ export let GetAccountReqs = new Counter('Get account Requests')
 export let UpdateAccountReqs = new Counter('Update account Requests')
 
 let duration = 500
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

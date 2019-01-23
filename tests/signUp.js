@@ -9,7 +9,7 @@ export let SignUpFailRate = new Rate('Sign up Fail Rate')
 export let SignUpReqs = new Counter('Sign up Requests')
 
 let duration = 1000
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

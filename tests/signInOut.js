@@ -12,7 +12,7 @@ export let SignOutFailRate = new Rate('Sign out Fail Rate')
 export let SignOutReqs = new Counter('Sign out Requests')
 
 let duration = 500
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

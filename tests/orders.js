@@ -14,7 +14,7 @@ export let GetOrdersReqs = new Counter('Get orders Requests')
 export let GetOrderReqs = new Counter('Get an order Requests')
 
 let duration = 500
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {

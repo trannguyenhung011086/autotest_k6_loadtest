@@ -25,7 +25,7 @@ export let HealthBeautyReqs = new Counter('Get health beauty Requests')
 export let HomeLifeStyleReqs = new Counter('Get home life style Requests')
 
 let duration = 100
-let rate = 0.1
+let rate = 0.05
 
 export let options = {
     thresholds: {
