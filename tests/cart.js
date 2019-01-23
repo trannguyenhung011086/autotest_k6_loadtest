@@ -1,7 +1,7 @@
 import { config, globalChecks } from '../common/index.js'
 import * as helper from '../common/helper.js'
 import http from 'k6/http'
-import { sleep, group } from 'k6'
+import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
 export let AddCartDuration = new Trend('Add cart Duration')
