@@ -13,16 +13,12 @@ import SalesTest from './view/sales.js'
 import { options as SalesOptions } from './view/sales.js'
 
 export function setup() {
-    let userCookies = helper.getCookies()
     let brandList = helper.getBrandList()
-    let productInfo = helper.getProduct()
     let saleInfo = helper.getSale()
     let saleList = helper.getSales()
 
     return {
-        cookies: userCookies,
         brands: brandList,
-        product: productInfo,
         sale: saleInfo,
         sales: saleList
     }
