@@ -63,6 +63,7 @@ Object.entries(GiftCardOptions.thresholds).forEach(item => optionsSum[item[0]] =
 Object.entries(VoucherOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 
 export let options = {
+    setupTimeout: '60s',
     thresholds: optionsSum
 }
 
