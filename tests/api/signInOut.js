@@ -23,7 +23,7 @@ export let options = {
     }
 }
 
-const users = JSON.parse(open('../common/users.json'))
+const users = JSON.parse(open('../../common/users.json'))
 
 export default function () {
     for (let user of users) {
