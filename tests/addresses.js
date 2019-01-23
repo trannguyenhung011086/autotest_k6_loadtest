@@ -58,7 +58,8 @@ export default function (data) {
     group('GET / get addresses API', () => {
         let res = http.get(__ENV.HOST + config.api.addresses)
 
-        globalChecks(res, duration) || GetAddressesFailRate.add(1)
+        let check = globalChecks(res, duration)
+        GetAddressesFailRate.add(!check)
         GetAddressesDuration.add(res.timings.duration)
         GetAddressesReqs.add(1)
 
@@ -66,7 +67,7 @@ export default function (data) {
     })
 
     group('POST / add address API', () => {
-        let body = {
+        let body = JSON.stringify({
             address: faker.address.streetAddress(),
             city: {
                 id: '578c1c2c4bda02a85e93f1b9',
@@ -82,12 +83,13 @@ export default function (data) {
             lastName: faker.name.lastName(),
             phone: '0123456789',
             type: 'shipping'
-        }
+        })
 
-        let res = http.post(__ENV.HOST + config.api.addresses, JSON.stringify(body),
+        let res = http.post(__ENV.HOST + config.api.addresses, body,
             { headers: { "Content-Type": "application/json" } })
 
-        globalChecks(res, duration) || AddAddressFailRate.add(1)
+        let check = globalChecks(res, duration)
+        AddAddressFailRate.add(!check)
         AddAddressDuration.add(res.timings.duration)
         AddAddressReqs.add(1)
 
@@ -98,7 +100,7 @@ export default function (data) {
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let shipping = JSON.parse(addresses.body).shipping
 
-        let body = {
+        let body = JSON.stringify({
             id: shipping[0].id,
             address: faker.address.streetAddress(),
             city: {
@@ -115,13 +117,13 @@ export default function (data) {
             lastName: faker.name.lastName(),
             phone: '0123456789',
             type: 'shipping'
-        }
+        })
 
         let res = http.put(__ENV.HOST + config.api.addresses + '/' + shipping[0].id,
-            JSON.stringify(body),
-            { headers: { "Content-Type": "application/json" } })
+            body, { headers: { "Content-Type": "application/json" } })
 
-        globalChecks(res, duration) || UpdateShippingFailRate.add(1)
+        let check = globalChecks(res, duration)
+        UpdateShippingFailRate.add(!check)
         UpdateShippingDuration.add(res.timings.duration)
         UpdateShippingReqs.add(1)
 
@@ -132,7 +134,7 @@ export default function (data) {
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let billing = JSON.parse(addresses.body).billing
 
-        let body = {
+        let body = JSON.stringify({
             id: billing[0].id,
             address: faker.address.streetAddress(),
             city: {
@@ -148,13 +150,13 @@ export default function (data) {
             lastName: faker.name.lastName(),
             phone: '0123456789',
             type: 'billing'
-        }
+        })
 
         let res = http.put(__ENV.HOST + config.api.addresses + '/' + billing[0].id,
-            JSON.stringify(body),
-            { headers: { "Content-Type": "application/json" } })
+            body, { headers: { "Content-Type": "application/json" } })
 
-        globalChecks(res, duration) || UpdateBillingFailRate.add(1)
+        let check = globalChecks(res, duration)
+        UpdateBillingFailRate.add(!check)
         UpdateBillingDuration.add(res.timings.duration)
         UpdateBillingReqs.add(1)
 
@@ -167,7 +169,8 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + shipping[0].id)
 
-        globalChecks(res, duration) || DeleteShippingFailRate.add(1)
+        let check = globalChecks(res, duration)
+        DeleteShippingFailRate.add(!check)
         DeleteShippingDuration.add(res.timings.duration)
         DeleteShippingReqs.add(1)
 
@@ -180,7 +183,8 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + billing[0].id)
 
-        globalChecks(res, duration) || DeleteBillingFailRate.add(1)
+        let check = globalChecks(res, duration)
+        DeleteBillingFailRate.add(!check)
         DeleteBillingDuration.add(res.timings.duration)
         DeleteBillingReqs.add(1)
 

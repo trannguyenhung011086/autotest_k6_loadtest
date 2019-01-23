@@ -38,19 +38,22 @@ export function setup() {
 export default function (data) {
     let addCart = http.post(__ENV.HOST + config.api.cart,
         { "productId": JSON.parse(data.product).products[0].id })
-    globalChecks(addCart, duration) || AddCartFailRate.add(1)
+    let checkAdd = globalChecks(addCart, duration)
+    AddCartFailRate.add(!checkAdd)
     AddCartDuration.add(addCart.timings.duration)
     AddCartReqs.add(1)
 
 
     let updateCart = http.put(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id,
         { "quantity": "2" })
-    globalChecks(updateCart, duration) || UpdateCartFailRate.add(1)
+    let checkUpdate = globalChecks(updateCart, duration)
+    UpdateCartFailRate.add(!checkUpdate)
     UpdateCartDuration.add(updateCart.timings.duration)
     UpdateCartReqs.add(1)
 
     let removeCart = http.del(__ENV.HOST + config.api.cart + '/' + JSON.parse(addCart.body).id)
-    globalChecks(removeCart, duration) || RemoveCartFailRate.add(1)
+    let checkRemove = globalChecks(removeCart, duration)
+    RemoveCartFailRate.add(!checkRemove)
     RemoveCartDuration.add(removeCart.timings.duration)
     RemoveCartReqs.add(1)
 

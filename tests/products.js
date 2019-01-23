@@ -30,7 +30,8 @@ export default function (data) {
     let res = http.get(__ENV.HOST + config.api.product + products[random].id)
     // console.log('product: ' + (JSON.parse(res.body)).title + ' ' + (JSON.parse(res.body)).id)
 
-    globalChecks(res, duration) || GetProductFailRate.add(1)
+    let check = globalChecks(res, duration)
+    GetProductFailRate.add(!check)
     GetProductDuration.add(res.timings.duration)
     GetProductReqs.add(1)
 

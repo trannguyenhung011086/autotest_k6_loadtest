@@ -32,13 +32,15 @@ export default function () {
             "email": user.email, "password": user.password
         })
 
-        globalChecks(resSignIn, duration) || SignInFailRate.add(1)
+        let checkSignIn = globalChecks(resSignIn, duration)
+        SignInFailRate.add(!checkSignIn)
         SignInDuration.add(resSignIn.timings.duration)
         SignInReqs.add(1)
 
         let resSignOut = http.get(__ENV.HOST + config.api.signOut)
 
-        globalChecks(resSignOut, duration) || SignOutFailRate.add(1)
+        let checkSignOut = globalChecks(resSignOut, duration)
+        SignOutFailRate.add(!checkSignOut)
         SignOutDuration.add(resSignOut.timings.duration)
         SignOutReqs.add(1)
     }
