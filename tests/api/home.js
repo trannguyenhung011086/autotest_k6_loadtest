@@ -1,4 +1,4 @@
-import { config, globalChecks } from '../common/index.js'
+import { config, globalChecks } from '../../common/index.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
