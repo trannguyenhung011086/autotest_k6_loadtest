@@ -21,8 +21,8 @@ import ProductsTest from './api/products.js'
 import { options as ProductsOptions } from './api/products.js'
 import SalesTest from './api/sales.js'
 import { options as SalesOptions } from './api/sales.js'
-// import SignInOutTest from './api/signInOut.js'
-// import { options as SignInOutOptions } from './api/signInOut.js'
+import SignInOutTest from './api/signInOut.js'
+import { options as SignInOutOptions } from './api/signInOut.js'
 import SignUpTest from './api/signUp.js'
 import { options as SignUpOptions } from './api/signUp.js'
 import GiftCardTest from './api/giftcard.js'
@@ -59,7 +59,7 @@ Object.entries(HomeOptions.thresholds).forEach(item => optionsSum[item[0]] = ite
 Object.entries(OrdersOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(ProductsOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(SalesOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
-// Object.entries(SignInOutOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
+Object.entries(SignInOutOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(SignUpOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(GiftCardOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(VoucherOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
@@ -110,9 +110,9 @@ export default (data) => {
         SalesTest(data)
     })
 
-    // group('Sign in & sign out', () => {
-    //     SignInOutTest()
-    // })
+    group('Sign in & sign out', () => {
+        SignInOutTest()
+    })
 
     group('Sign up', () => {
         SignUpTest()
