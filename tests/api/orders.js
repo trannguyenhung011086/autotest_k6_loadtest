@@ -47,15 +47,15 @@ export default function (data) {
 
     group('GET / Get an order API', () => {
         let orders = http.get(__ENV.HOST + config.api.orders)
+        orders = JSON.parse(orders.body)
+        let random = Math.floor(Math.random() * orders.length)
 
-        for (let order of JSON.parse(orders.body)) {
-            let res = http.get(__ENV.HOST + config.api.orders + '/' + order.id)
+        let res = http.get(__ENV.HOST + config.api.orders + '/' + orders[random].id)
 
-            let check = globalChecks(res, duration)
-            GetOrderFailRate.add(!check)
-            GetOrderDuration.add(res.timings.duration)
-            GetOrderReqs.add(1)
-        }
+        let check = globalChecks(res, duration)
+        GetOrderFailRate.add(!check)
+        GetOrderDuration.add(res.timings.duration)
+        GetOrderReqs.add(1)
 
         sleep(1)
     })

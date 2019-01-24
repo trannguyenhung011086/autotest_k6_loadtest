@@ -26,24 +26,23 @@ export let options = {
 const users = JSON.parse(open('../../common/users.json'))
 
 export default function () {
-    for (let user of users) {
-        
-        let resSignIn = http.post(__ENV.HOST + config.api.signIn, {
-            "email": user.email, "password": user.password
-        })
+    let random = Math.floor(Math.random() * users.length)
 
-        let checkSignIn = globalChecks(resSignIn, duration)
-        SignInFailRate.add(!checkSignIn)
-        SignInDuration.add(resSignIn.timings.duration)
-        SignInReqs.add(1)
+    let resSignIn = http.post(__ENV.HOST + config.api.signIn, {
+        "email": users[random].email, "password": users[random].password
+    })
 
-        let resSignOut = http.get(__ENV.HOST + config.api.signOut)
+    let checkSignIn = globalChecks(resSignIn, duration)
+    SignInFailRate.add(!checkSignIn)
+    SignInDuration.add(resSignIn.timings.duration)
+    SignInReqs.add(1)
 
-        let checkSignOut = globalChecks(resSignOut, duration)
-        SignOutFailRate.add(!checkSignOut)
-        SignOutDuration.add(resSignOut.timings.duration)
-        SignOutReqs.add(1)
-    }
+    let resSignOut = http.get(__ENV.HOST + config.api.signOut)
+
+    let checkSignOut = globalChecks(resSignOut, duration)
+    SignOutFailRate.add(!checkSignOut)
+    SignOutDuration.add(resSignOut.timings.duration)
+    SignOutReqs.add(1)
 
     sleep(1)
 }
