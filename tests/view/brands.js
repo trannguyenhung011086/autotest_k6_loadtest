@@ -12,7 +12,7 @@ export let BrandsFailRate = new Rate('View brands Fail Rate')
 export let BrandNoProductFailRate = new Rate('View brand with no product Fail Rate')
 export let BrandWithProductFailRate = new Rate('View brand with products Fail Rate')
 
-export let BrandsReqs = new Counter('Brands Requests')
+export let BrandsReqs = new Counter('View brands Requests')
 export let BrandNoProductReqs = new Counter('View brand with no product Requests')
 export let BrandWithProductReqs = new Counter('View brand with products Requests')
 
