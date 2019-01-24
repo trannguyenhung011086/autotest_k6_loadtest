@@ -4,17 +4,17 @@ import http from 'k6/http'
 import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
-export let GetProductDuration = new Trend('Get product Duration')
-export let GetProductFailRate = new Rate('Get product Fail Rate')
-export let GetProductReqs = new Counter('Get product Requests')
+export let GetProductDuration = new Trend('Get product info Duration')
+export let GetProductFailRate = new Rate('Get product info Fail Rate')
+export let GetProductReqs = new Counter('Get product info Requests')
 
-let duration = 300
+let duration = 1000
 let rate = 0.05
 
 export let options = {
     thresholds: {
-        'Get product Duration': [`p(95)<${duration}`],
-        'Get product Fail Rate': [`rate<${rate}`]
+        'Get product info Duration': [`p(95)<${duration}`],
+        'Get product info Fail Rate': [`rate<${rate}`]
     }
 }
 

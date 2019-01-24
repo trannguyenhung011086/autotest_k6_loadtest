@@ -4,24 +4,24 @@ import http from 'k6/http'
 import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
-export let GetOngoingSaleDuration = new Trend('Get ongoing sale Duration')
-export let GetUpcomingSaleDuration = new Trend('Get upcoming sale Duration')
+export let GetOngoingSaleDuration = new Trend('Get ongoing sale info Duration')
+export let GetUpcomingSaleDuration = new Trend('Get upcoming sale info Duration')
 
-export let GetOngoingSaleFailRate = new Rate('Get ongoing sale Fail Rate')
-export let GetUpcomingSaleFailRate = new Rate('Get upcoming sale Fail Rate')
+export let GetOngoingSaleFailRate = new Rate('Get ongoing sale info Fail Rate')
+export let GetUpcomingSaleFailRate = new Rate('Get upcoming sale info Fail Rate')
 
-export let GetOngoingSaleReqs = new Counter('Get ongoing sale Requests')
-export let GetUpcomingSaleReqs = new Counter('Get upcoming sale Requests')
+export let GetOngoingSaleReqs = new Counter('Get ongoing sale info Requests')
+export let GetUpcomingSaleReqs = new Counter('Get upcoming sale info Requests')
 
-let duration = 300
+let duration = 1000
 let rate = 0.05
 
 export let options = {
     thresholds: {
-        'Get ongoing sale Duration': [`p(95)<${duration}`],
-        'Get ongoing sale Fail Rate': [`rate<${rate}`],
-        'Get upcoming sale Duration': [`p(95)<${duration}`],
-        'Get upcoming sale Fail Rate': [`rate<${rate}`]
+        'Get ongoing sale info Duration': [`p(95)<${duration}`],
+        'Get ongoing sale info Fail Rate': [`rate<${rate}`],
+        'Get upcoming sale info Duration': [`p(95)<${duration}`],
+        'Get upcoming sale info Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -31,7 +31,7 @@ export function setup() {
 }
 
 export default function (data) {
-    group('GET / get ongoing sale API', () => {
+    group('GET / Get ongoing sale info API', () => {
         let sales = JSON.parse(data.sales.ongoing)
         let random = Math.floor(Math.random() * sales.length)
 
@@ -46,7 +46,7 @@ export default function (data) {
         sleep(1)
     })
 
-    group('GET / get upcoming sale API', () => {
+    group('GET / Get upcoming sale info API', () => {
         let dates = JSON.parse(data.sales.upcoming)
         let random = Math.floor(Math.random() * dates[0].sales.length)
 

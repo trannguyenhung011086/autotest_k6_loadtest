@@ -4,29 +4,29 @@ import http from 'k6/http'
 import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
-export let BrandsDuration = new Trend('Brands Duration')
-export let BrandNoProductDuration = new Trend('Brand with no product Duration')
-export let BrandWithProductDuration = new Trend('Brand with products Duration')
+export let BrandsDuration = new Trend('Get brands Duration')
+export let BrandNoProductDuration = new Trend('Get brand with no product Duration')
+export let BrandWithProductDuration = new Trend('Get brand with products Duration')
 
-export let BrandsFailRate = new Rate('Brands Fail Rate')
-export let BrandNoProductFailRate = new Rate('Brand with no product Fail Rate')
-export let BrandWithProductFailRate = new Rate('Brand with products Fail Rate')
+export let BrandsFailRate = new Rate('Get brands Fail Rate')
+export let BrandNoProductFailRate = new Rate('Get brand with no product Fail Rate')
+export let BrandWithProductFailRate = new Rate('Get brand with products Fail Rate')
 
-export let BrandsReqs = new Counter('Brands Requests')
-export let BrandNoProductReqs = new Counter('Brand with no product Requests')
-export let BrandWithProductReqs = new Counter('Brand with products Requests')
+export let BrandsReqs = new Counter('Get brands Requests')
+export let BrandNoProductReqs = new Counter('Get brand with no product Requests')
+export let BrandWithProductReqs = new Counter('Get brand with products Requests')
 
-let duration = 500
+let duration = 1000
 let rate = 0.05
 
 export let options = {
     thresholds: {
-        'Brands Duration': [`p(95)<${duration}`],
-        'Brands Fail Rate': [`rate<${rate}`],
-        'Brand with no product Duration': [`p(95)<${duration}`],
-        'Brand with no product Fail Rate': [`rate<${rate}`],
-        'Brand with products Duration': [`p(95)<${duration}`],
-        'Brand with products Fail Rate': [`rate<${rate}`]
+        'Get brands Duration': [`p(95)<${duration}`],
+        'Get brands Fail Rate': [`rate<${rate}`],
+        'Get brand with no product Duration': [`p(95)<${duration}`],
+        'Get brand with no product Fail Rate': [`rate<${rate}`],
+        'Get brand with products Duration': [`p(95)<${duration}`],
+        'Get brand with products Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -58,13 +58,13 @@ export default function (data) {
             BrandNoProductFailRate.add(!check)
             BrandNoProductDuration.add(res.timings.duration)
             BrandNoProductReqs.add(1)
-            // console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
+            // console.log('Get brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
         } else {
             let check = globalChecks(res, duration)
             BrandWithProductFailRate.add(!check)
             BrandWithProductDuration.add(res.timings.duration)
             BrandWithProductReqs.add(1)
-            // console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')
+            // console.log('Get brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')
         }
 
         sleep(1)

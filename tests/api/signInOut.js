@@ -23,13 +23,9 @@ export let options = {
     }
 }
 
-const users = JSON.parse(open('../../common/users.json'))
-
 export default function () {
-    let random = Math.floor(Math.random() * users.length)
-
     let resSignIn = http.post(__ENV.HOST + config.api.signIn, {
-        "email": users[random].email, "password": users[random].password
+        "email": config.testAccount.email, "password": config.testAccount.password
     })
 
     let checkSignIn = globalChecks(resSignIn, duration)

@@ -16,7 +16,7 @@ export let BrandsReqs = new Counter('Brands Requests')
 export let BrandNoProductReqs = new Counter('View brand with no product Requests')
 export let BrandWithProductReqs = new Counter('View brand with products Requests')
 
-let duration = 500
+let duration = 3000
 let rate = 0.05
 
 export let options = {

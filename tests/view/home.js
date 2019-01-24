@@ -7,7 +7,7 @@ export let ViewHomeDuration = new Trend('View home Duration')
 export let ViewHomeFailRate = new Rate('View home Fail Rate')
 export let ViewHomeReqs = new Counter('View home Requests')
 
-let duration = 500
+let duration = 3000
 let rate = 0.05
 
 export let options = {

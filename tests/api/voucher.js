@@ -13,7 +13,7 @@ export let InvalidVoucherFailRate = new Rate('Check invalid voucher Fail Rate')
 export let ValidVoucherReqs = new Counter('Check valid voucher Requests')
 export let InvalidVoucherReqs = new Counter('Check invalid voucher Requests')
 
-let duration = 200
+let duration = 300
 let rate = 0.05
 
 export let options = {

@@ -8,7 +8,7 @@ export let ViewProductDuration = new Trend('View product Duration')
 export let ViewProductFailRate = new Rate('View product Fail Rate')
 export let ViewProductReqs = new Counter('View product Requests')
 
-let duration = 500
+let duration = 3000
 let rate = 0.05
 
 export let options = {

@@ -13,7 +13,7 @@ export let ViewUpcomingSaleFailRate = new Rate('View upcoming sale Fail Rate')
 export let ViewOngoingSaleReqs = new Counter('View ongoing sale Requests')
 export let ViewUpcomingSaleReqs = new Counter('View upcoming sale Requests')
 
-let duration = 500
+let duration = 3000
 let rate = 0.05
 
 export let options = {

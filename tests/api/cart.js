@@ -16,7 +16,7 @@ export let AddCartReqs = new Counter('Add cart Requests')
 export let UpdateCartReqs = new Counter('Update cart Requests')
 export let RemoveCartReqs = new Counter('Remove cart Requests')
 
-let duration = 300
+let duration = 500
 let rate = 0.05
 
 export let options = {
