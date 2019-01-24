@@ -41,11 +41,51 @@ export let options = {
 
 export default function () {
     let requests = {
-        'apparel': __ENV.HOST + '/categories' + config.api.cateApparel.replace('/api/menus/items', ''),
-        'bags': __ENV.HOST + '/categories' + config.api.cateBagsShoes.replace('/api/menus/items', ''),
-        'accessories': __ENV.HOST + '/categories' + config.api.cateAccessories.replace('/api/menus/items', ''),
-        'health': __ENV.HOST + '/categories' + config.api.cateHealthBeauty.replace('/api/menus/items', ''),
-        'home': __ENV.HOST + '/categories' + config.api.cateHomeLifeStyle.replace('/api/menus/items', '')
+        'apparel': {
+            method: 'GET',
+            url: __ENV.HOST + '/categories' + config.api.cateApparel.replace('/api/menus/items', ''),
+            params: {
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+                }
+            }
+        },
+        'bags': {
+            method: 'GET',
+            url: __ENV.HOST + '/categories' + config.api.cateBagsShoes.replace('/api/menus/items', ''),
+            params: {
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+                }
+            }
+        },
+        'accessories': {
+            method: 'GET',
+            url: __ENV.HOST + '/categories' + config.api.cateAccessories.replace('/api/menus/items', ''),
+            params: {
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+                }
+            }
+        },
+        'health': {
+            method: 'GET',
+            url: __ENV.HOST + '/categories' + config.api.cateHealthBeauty.replace('/api/menus/items', ''),
+            params: {
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+                }
+            }
+        },
+        'home': {
+            method: 'GET',
+            url: __ENV.HOST + '/categories' + config.api.cateHomeLifeStyle.replace('/api/menus/items', ''),
+            params: {
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+                }
+            }
+        }
     }
     let res = http.batch(requests)
 

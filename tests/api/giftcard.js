@@ -13,7 +13,7 @@ export let InvalidGiftCardFailRate = new Rate('Gift card - Check invalid Fail Ra
 export let ValidGiftCardReqs = new Counter('Gift card - Check valid Requests')
 export let InvalidGiftCardReqs = new Counter('Gift card - Check invalid Requests')
 
-let duration = 300
+let duration = 100
 let rate = 0.05
 
 export let options = {

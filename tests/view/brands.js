@@ -37,7 +37,11 @@ export function setup() {
 
 export default function (data) {
     group('View brands list', () => {
-        let res = http.get(__ENV.HOST + '/brands')
+        let res = http.get(__ENV.HOST + '/brands', {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+            }
+        })
 
         let check = globalChecks(res, duration)
         BrandsFailRate.add(!check)
@@ -50,10 +54,18 @@ export default function (data) {
     group('View brand page', () => {
         let random = Math.floor(Math.random() * data.brands.length)
 
-        let res = http.get(__ENV.HOST + config.api.brands + data.brands[random].id)
+        let res = http.get(__ENV.HOST + config.api.brands + data.brands[random].id, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+            }
+        })
         res.body = JSON.parse(res.body)
 
-        let view = http.get(__ENV.HOST + '/brands/' + data.brands[random].id)
+        let view = http.get(__ENV.HOST + '/brands/' + data.brands[random].id, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+            }
+        })
 
         if (res.body.products.length == 0) {
             let check = globalChecks(view, duration)

@@ -35,7 +35,11 @@ export default function (data) {
         let sales = JSON.parse(data.sales.ongoing)
         let random = Math.floor(Math.random() * sales.length)
 
-        let res = http.get(__ENV.HOST + '/sales/' + sales[random].id)
+        let res = http.get(__ENV.HOST + '/sales/' + sales[random].id, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+            }
+        })
         // console.log('ongoing sale: ' + sales[random].title + ' ' + sales[random].id)
 
         let check = globalChecks(res, duration)

@@ -7,7 +7,7 @@ export let BestSellersDuration = new Trend('Get best sellers Duration')
 export let BestSellersFailRate = new Rate('Get best sellers Fail Rate')
 export let BestSellersReqs = new Counter('Get best sellers Requests')
 
-let duration = 500
+let duration = 300
 let rate = 0.05
 
 export let options = {

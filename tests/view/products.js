@@ -27,7 +27,11 @@ export default function (data) {
     let products = JSON.parse(data.sale).products
     let random = Math.floor(Math.random() * products.length)
 
-    let res = http.get(__ENV.HOST + '/products/' + products[random].id)
+    let res = http.get(__ENV.HOST + '/products/' + products[random].id, {
+        headers: {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
+        }
+    })
     // console.log('product: ' + (JSON.parse(res.body)).title + ' ' + (JSON.parse(res.body)).id)
 
     let check = globalChecks(res, duration)
