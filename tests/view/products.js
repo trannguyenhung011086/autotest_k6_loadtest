@@ -32,7 +32,7 @@ export default function (data) {
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
         }
     })
-    console.log('View product: ' + JSON.parse(res.body).slug)
+    console.log('View product: ' + products[random].slug)
 
     let check = globalChecks(res, duration)
     ViewProductFailRate.add(!check)
