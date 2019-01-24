@@ -4,29 +4,29 @@ import http from 'k6/http'
 import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
-export let AddCartDuration = new Trend('Add cart Duration')
-export let UpdateCartDuration = new Trend('Update cart Duration')
-export let RemoveCartDuration = new Trend('Remove cart Duration')
+export let AddCartDuration = new Trend('Cart - Add product Duration')
+export let UpdateCartDuration = new Trend('Cart - Update quantity Duration')
+export let RemoveCartDuration = new Trend('Cart - Remove product Duration')
 
-export let AddCartFailRate = new Rate('Add cart Fail Rate')
-export let UpdateCartFailRate = new Rate('Update cart Fail Rate')
-export let RemoveCartFailRate = new Rate('Remove cart Fail Rate')
+export let AddCartFailRate = new Rate('Cart - Add product Fail Rate')
+export let UpdateCartFailRate = new Rate('Cart - Update quantity Fail Rate')
+export let RemoveCartFailRate = new Rate('Cart - Remove product Fail Rate')
 
-export let AddCartReqs = new Counter('Add cart Requests')
-export let UpdateCartReqs = new Counter('Update cart Requests')
-export let RemoveCartReqs = new Counter('Remove cart Requests')
+export let AddCartReqs = new Counter('Cart - Add product Requests')
+export let UpdateCartReqs = new Counter('Cart - Update quantity Requests')
+export let RemoveCartReqs = new Counter('Cart - Remove product Requests')
 
 let duration = 500
 let rate = 0.05
 
 export let options = {
     thresholds: {
-        'Add cart Duration': [`p(95)<${duration}`],
-        'Add cart Fail Rate': [`rate<${rate}`],
-        'Update cart Duration': [`p(95)<${duration}`],
-        'Update cart Fail Rate': [`rate<${rate}`],
-        'Remove cart Duration': [`p(95)<${duration}`],
-        'Remove cart Fail Rate': [`rate<${rate}`]
+        'Cart - Add product Duration': [`p(95)<${duration}`],
+        'Cart - Add product Fail Rate': [`rate<${rate}`],
+        'Cart - Update quantity Duration': [`p(95)<${duration}`],
+        'Cart - Update quantity Fail Rate': [`rate<${rate}`],
+        'Cart - Remove product Duration': [`p(95)<${duration}`],
+        'Cart - Remove product Fail Rate': [`rate<${rate}`]
     }
 }
 

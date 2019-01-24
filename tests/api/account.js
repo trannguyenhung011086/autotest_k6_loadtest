@@ -5,24 +5,24 @@ import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 import faker from 'cdnjs.com/libraries/Faker'
 
-export let GetAccountDuration = new Trend('Get account Duration')
-export let UpdateAccountDuration = new Trend('Update account Duration')
+export let GetAccountDuration = new Trend('Account - Get info Duration')
+export let UpdateAccountDuration = new Trend('Account - Update  info Duration')
 
-export let GetAccountFailRate = new Rate('Get account Fail Rate')
-export let UpdateAccountFailRate = new Rate('Update account Fail Rate')
+export let GetAccountFailRate = new Rate('Account - Get info Fail Rate')
+export let UpdateAccountFailRate = new Rate('Account - Update  info Fail Rate')
 
-export let GetAccountReqs = new Counter('Get account Requests')
-export let UpdateAccountReqs = new Counter('Update account Requests')
+export let GetAccountReqs = new Counter('Account - Get info Requests')
+export let UpdateAccountReqs = new Counter('Account - Update  info Requests')
 
 let duration = 500
 let rate = 0.05
 
 export let options = {
     thresholds: {
-        'Get account Duration': [`p(95)<${duration}`],
-        'Get account Fail Rate': [`rate<${rate}`],
-        'Update account Duration': [`p(95)<${duration}`],
-        'Update account Fail Rate': [`rate<${rate}`]
+        'Account - Get info Duration': [`p(95)<${duration}`],
+        'Account - Get info Fail Rate': [`rate<${rate}`],
+        'Account - Update  info Duration': [`p(95)<${duration}`],
+        'Account - Update  info Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -35,7 +35,7 @@ export default function (data) {
     let jar = http.cookieJar()
     jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data.cookies)['leflair.connect.sid'][0].value)
 
-    group('GET / get account API', () => {
+    group('GET / Account - Get info API', () => {
         let res = http.get(__ENV.HOST + config.api.account)
 
         let check = globalChecks(res, duration)
@@ -46,7 +46,7 @@ export default function (data) {
         sleep(1)
     })
 
-    group('PUT / update account API', () => {
+    group('PUT / Account - Update  info API', () => {
         let body = JSON.stringify({
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName()

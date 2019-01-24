@@ -46,43 +46,43 @@ export let options = {
 
 export default function () {
     let requests = {
-        'Get today': __ENV.HOST + config.api.todaySales,
-        'Get current': __ENV.HOST + config.api.currentSales,
-        'Get featured': __ENV.HOST + config.api.featuredSales,
-        'Get international': __ENV.HOST + config.api.internationalSales,
-        'Get POTD': __ENV.HOST + config.api.potdSales,
-        'Get upcoming': __ENV.HOST + config.api.upcomingSales
+        'today': __ENV.HOST + config.api.todaySales,
+        'current': __ENV.HOST + config.api.currentSales,
+        'featured': __ENV.HOST + config.api.featuredSales,
+        'international': __ENV.HOST + config.api.internationalSales,
+        'potd': __ENV.HOST + config.api.potdSales,
+        'upcoming': __ENV.HOST + config.api.upcomingSales
     }
     let res = http.batch(requests)
 
-    let checkToday = globalChecks(res['Get today'], duration)
+    let checkToday = globalChecks(res['today'], duration)
     TodayFailRate.add(!checkToday)
-    TodayDuration.add(res['Get today'].timings.duration)
+    TodayDuration.add(res['today'].timings.duration)
     TodayReqs.add(1)
 
-    let checkCurrent = globalChecks(res['Get current'], duration)
+    let checkCurrent = globalChecks(res['current'], duration)
     CurrentFailRate.add(!checkCurrent)
-    CurrentDuration.add(res['Get current'].timings.duration)
+    CurrentDuration.add(res['current'].timings.duration)
     CurrentReqs.add(1)
 
-    let checkFeatured = globalChecks(res['Get featured'], duration)
+    let checkFeatured = globalChecks(res['featured'], duration)
     FeaturedFailRate.add(!checkFeatured)
-    FeaturedDuration.add(res['Get featured'].timings.duration)
+    FeaturedDuration.add(res['featured'].timings.duration)
     FeaturedReqs.add(1)
 
-    let checkInternational = globalChecks(res['Get international'], duration)
+    let checkInternational = globalChecks(res['international'], duration)
     InternationalFailRate.add(!checkInternational)
-    InternationalDuration.add(res['Get international'].timings.duration)
+    InternationalDuration.add(res['international'].timings.duration)
     InternationalReqs.add(1)
 
-    let checkPotd = globalChecks(res['Get POTD'], duration)
+    let checkPotd = globalChecks(res['potd'], duration)
     PotdFailRate.add(!checkPotd)
-    PotdDuration.add(res['Get POTD'].timings.duration)
+    PotdDuration.add(res['potd'].timings.duration)
     PotdReqs.add(1)
 
-    let checkUpcoming = globalChecks(res['Get upcoming'], duration)
+    let checkUpcoming = globalChecks(res['upcoming'], duration)
     UpcomingFailRate.add(!checkUpcoming)
-    UpcomingDuration.add(res['Get upcoming'].timings.duration)
+    UpcomingDuration.add(res['upcoming'].timings.duration)
     UpcomingReqs.add(1)
 
     sleep(1)

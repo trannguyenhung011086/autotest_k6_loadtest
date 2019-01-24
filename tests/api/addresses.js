@@ -5,44 +5,44 @@ import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 import faker from 'cdnjs.com/libraries/Faker'
 
-export let GetAddressesDuration = new Trend('Get addresses Duration')
-export let AddAddressDuration = new Trend('Add address Duration')
-export let UpdateShippingDuration = new Trend('Update shipping Duration')
-export let UpdateBillingDuration = new Trend('Update billing Duration')
-export let DeleteShippingDuration = new Trend('Delete shipping Duration')
-export let DeleteBillingDuration = new Trend('Delete billing Duration')
+export let GetAddressesDuration = new Trend('Address - Get info Duration')
+export let AddAddressDuration = new Trend('Address - Add Duration')
+export let UpdateShippingDuration = new Trend('Address - Update shipping Duration')
+export let UpdateBillingDuration = new Trend('Address - Update billing Duration')
+export let DeleteShippingDuration = new Trend('Address - Delete shipping Duration')
+export let DeleteBillingDuration = new Trend('Address - Delete billing Duration')
 
-export let GetAddressesFailRate = new Rate('Get addressess Fail Rate')
-export let AddAddressFailRate = new Rate('Add address Fail Rate')
-export let UpdateShippingFailRate = new Rate('Update shipping Fail Rate')
-export let UpdateBillingFailRate = new Rate('Update billing Fail Rate')
-export let DeleteShippingFailRate = new Rate('Delete shipping Fail Rate')
-export let DeleteBillingFailRate = new Rate('Delete billing Fail Rate')
+export let GetAddressesFailRate = new Rate('Address - Get infos Fail Rate')
+export let AddAddressFailRate = new Rate('Address - Add Fail Rate')
+export let UpdateShippingFailRate = new Rate('Address - Update shipping Fail Rate')
+export let UpdateBillingFailRate = new Rate('Address - Update billing Fail Rate')
+export let DeleteShippingFailRate = new Rate('Address - Delete shipping Fail Rate')
+export let DeleteBillingFailRate = new Rate('Address - Delete billing Fail Rate')
 
-export let GetAddressesReqs = new Counter('Get addresses Requests')
-export let AddAddressReqs = new Counter('Add address Requests')
-export let UpdateShippingReqs = new Counter('Update shipping Requests')
-export let UpdateBillingReqs = new Counter('Update billing Requests')
-export let DeleteShippingReqs = new Counter('Delete shipping Requests')
-export let DeleteBillingReqs = new Counter('Delete billing Requests')
+export let GetAddressesReqs = new Counter('Address - Get info Requests')
+export let AddAddressReqs = new Counter('Address - Add Requests')
+export let UpdateShippingReqs = new Counter('Address - Update shipping Requests')
+export let UpdateBillingReqs = new Counter('Address - Update billing Requests')
+export let DeleteShippingReqs = new Counter('Address - Delete shipping Requests')
+export let DeleteBillingReqs = new Counter('Address - Delete billing Requests')
 
 let duration = 500
 let rate = 0.05
 
 export let options = {
     thresholds: {
-        'Get addresses Duration': [`p(95)<${duration}`],
-        'Get addresses Fail Rate': [`rate<${rate}`],
-        'Add address Duration': [`p(95)<${duration}`],
-        'Add address Fail Rate': [`rate<${rate}`],
-        'Update shipping Duration': [`p(95)<${duration}`],
-        'Update shipping Fail Rate': [`rate<${rate}`],
-        'Update billing Duration': [`p(95)<${duration}`],
-        'Update billing Fail Rate': [`rate<${rate}`],
-        'Delete shipping Duration': [`p(95)<${duration}`],
-        'Delete shipping Fail Rate': [`rate<${rate}`],
-        'Delete billing Duration': [`p(95)<${duration}`],
-        'Delete billing Fail Rate': [`rate<${rate}`]
+        'Address - Get info Duration': [`p(95)<${duration}`],
+        'Address - Get info Fail Rate': [`rate<${rate}`],
+        'Address - Add Duration': [`p(95)<${duration}`],
+        'Address - Add Fail Rate': [`rate<${rate}`],
+        'Address - Update shipping Duration': [`p(95)<${duration}`],
+        'Address - Update shipping Fail Rate': [`rate<${rate}`],
+        'Address - Update billing Duration': [`p(95)<${duration}`],
+        'Address - Update billing Fail Rate': [`rate<${rate}`],
+        'Address - Delete shipping Duration': [`p(95)<${duration}`],
+        'Address - Delete shipping Fail Rate': [`rate<${rate}`],
+        'Address - Delete billing Duration': [`p(95)<${duration}`],
+        'Address - Delete billing Fail Rate': [`rate<${rate}`]
     }
 }
 
@@ -55,7 +55,7 @@ export default function (data) {
     let jar = http.cookieJar()
     jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data.cookies)['leflair.connect.sid'][0].value)
 
-    group('GET / get addresses API', () => {
+    group('GET / Address - Get info API', () => {
         let res = http.get(__ENV.HOST + config.api.addresses)
 
         let check = globalChecks(res, duration)
@@ -66,7 +66,7 @@ export default function (data) {
         sleep(1)
     })
 
-    group('POST / add address API', () => {
+    group('POST / Address - Add API', () => {
         let body = JSON.stringify({
             address: faker.address.streetAddress(),
             city: {
@@ -96,7 +96,7 @@ export default function (data) {
         sleep(1)
     })
 
-    group('PUT / update shipping address API', () => {
+    group('PUT / Address - Update shipping address API', () => {
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let shipping = JSON.parse(addresses.body).shipping
 
@@ -130,7 +130,7 @@ export default function (data) {
         sleep(1)
     })
 
-    group('PUT / update billing address API', () => {
+    group('PUT / Address - Update billing address API', () => {
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let billing = JSON.parse(addresses.body).billing
 
@@ -163,7 +163,7 @@ export default function (data) {
         sleep(1)
     })
 
-    group('DELETE / delete shipping address API', () => {
+    group('DELETE / Address - Delete shipping address API', () => {
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let shipping = JSON.parse(addresses.body).shipping
 
@@ -177,7 +177,7 @@ export default function (data) {
         sleep(1)
     })
 
-    group('DELETE / delete billing address API', () => {
+    group('DELETE / Address - Delete billing address API', () => {
         let addresses = http.get(__ENV.HOST + config.api.addresses)
         let billing = JSON.parse(addresses.body).billing
 

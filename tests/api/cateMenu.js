@@ -3,44 +3,44 @@ import http from 'k6/http'
 import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 
-export let MenuDuration = new Trend('Get top menu Duration')
-export let ApparelDuration = new Trend('Get apparel menu Duration')
-export let BagsShoesDuration = new Trend('Get bags shoes menu Duration')
-export let AccessoriesDuration = new Trend('Get accessories menu Duration')
-export let HealthBeautyDuration = new Trend('Get health beauty menu Duration')
-export let HomeLifeStyleDuration = new Trend('Get home life style menu Duration')
+export let MenuDuration = new Trend('Menu - Get top Duration')
+export let ApparelDuration = new Trend('Menu - Get apparel Duration')
+export let BagsShoesDuration = new Trend('Menu - Get bags shoes Duration')
+export let AccessoriesDuration = new Trend('Menu - Get accessories Duration')
+export let HealthBeautyDuration = new Trend('Menu - Get health beauty Duration')
+export let HomeLifeStyleDuration = new Trend('Menu - Get home life style Duration')
 
-export let MenuFailRate = new Rate('Get top menu Fail Rate')
-export let ApparelFailRate = new Rate('Get apparel menu Fail Rate')
-export let BagsShoesFailRate = new Rate('Get bags shoes menu Fail Rate')
-export let AccessoriesFailRate = new Rate('Get accessories menu Fail Rate')
-export let HealthBeautyFailRate = new Rate('Get health beauty menu Fail Rate')
-export let HomeLifeStyleFailRate = new Rate('Get home life style menu Fail Rate')
+export let MenuFailRate = new Rate('Menu - Get top Fail Rate')
+export let ApparelFailRate = new Rate('Menu - Get apparel Fail Rate')
+export let BagsShoesFailRate = new Rate('Menu - Get bags shoes Fail Rate')
+export let AccessoriesFailRate = new Rate('Menu - Get accessories Fail Rate')
+export let HealthBeautyFailRate = new Rate('Menu - Get health beauty Fail Rate')
+export let HomeLifeStyleFailRate = new Rate('Menu - Get home life style Fail Rate')
 
-export let MenuReqs = new Counter('Get top menu Requests')
-export let ApparelReqs = new Counter('Get apparel menu Requests')
-export let BagsShoesReqs = new Counter('Get bags shoes menu Requests')
-export let AccessoriesReqs = new Counter('Get accessories menu Requests')
-export let HealthBeautyReqs = new Counter('Get health beauty menu Requests')
-export let HomeLifeStyleReqs = new Counter('Get home life style menu Requests')
+export let MenuReqs = new Counter('Menu - Get top Requests')
+export let ApparelReqs = new Counter('Menu - Get apparel Requests')
+export let BagsShoesReqs = new Counter('Menu - Get bags shoes Requests')
+export let AccessoriesReqs = new Counter('Menu - Get accessories Requests')
+export let HealthBeautyReqs = new Counter('Menu - Get health beauty Requests')
+export let HomeLifeStyleReqs = new Counter('Menu - Get home life style Requests')
 
 let duration = 100
 let rate = 0.05
 
 export let options = {
     thresholds: {
-        'Get top menu Duration': [`p(95)<${duration}`],
-        'Get top menu Fail Rate': [`rate<${rate}`],
-        'Get apparel menu Duration': [`p(95)<${duration}`],
-        'Get apparel menu Fail Rate': [`rate<${rate}`],
-        'Get bags shoes menu Duration': [`p(95)<${duration}`],
-        'Get bags shoes menu Fail Rate': [`rate<${rate}`],
-        'Get accessories menu Duration': [`p(95)<${duration}`],
-        'Get accessories menu Fail Rate': [`rate<${rate}`],
-        'Get health beauty menu Duration': [`p(95)<${duration}`],
-        'Get health beauty menu Fail Rate': [`rate<${rate}`],
-        'Get home life style menu Duration': [`p(95)<${duration}`],
-        'Get home life style menu Fail Rate': [`rate<${rate}`]
+        'Menu - Get top Duration': [`p(95)<${duration}`],
+        'Menu - Get top Fail Rate': [`rate<${rate}`],
+        'Menu - Get apparel Duration': [`p(95)<${duration}`],
+        'Menu - Get apparel Fail Rate': [`rate<${rate}`],
+        'Menu - Get bags shoes Duration': [`p(95)<${duration}`],
+        'Menu - Get bags shoes Fail Rate': [`rate<${rate}`],
+        'Menu - Get accessories Duration': [`p(95)<${duration}`],
+        'Menu - Get accessories Fail Rate': [`rate<${rate}`],
+        'Menu - Get health beauty Duration': [`p(95)<${duration}`],
+        'Menu - Get health beauty Fail Rate': [`rate<${rate}`],
+        'Menu - Get home life style Duration': [`p(95)<${duration}`],
+        'Menu - Get home life style Fail Rate': [`rate<${rate}`]
     }
 }
 
