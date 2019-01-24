@@ -32,6 +32,7 @@ import { options as VoucherOptions } from './api/voucher.js'
 
 export function setup() {
     let userCookies = helper.getCookies()
+    let userOrders = helper.getOrders()
     let brandList = helper.getBrandList()
     let productInfo = helper.getProduct()
     let saleInfo = helper.getSale()
@@ -39,6 +40,7 @@ export function setup() {
 
     return {
         cookies: userCookies,
+        orders: userOrders,
         brands: brandList,
         product: productInfo,
         sale: saleInfo,

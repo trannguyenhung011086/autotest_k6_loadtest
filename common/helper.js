@@ -54,3 +54,8 @@ export function getSales() {
         upcoming: res['upcoming'].body
     }
 }
+
+export function getOrders() {
+    let res = http.get(__ENV.HOST + config.api.orders)
+    return res.body
+}

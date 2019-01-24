@@ -27,7 +27,11 @@ export let options = {
 
 export function setup() {
     let userCookies = helper.getCookies()
-    return { cookies: userCookies }
+    let userOrders = helper.getOrders()
+    return {
+        cookies: userCookies,
+        orders: userOrders
+    }
 }
 
 export default function (data) {
@@ -46,8 +50,7 @@ export default function (data) {
     })
 
     group('GET / Get an order API', () => {
-        let orders = http.get(__ENV.HOST + config.api.orders)
-        orders = JSON.parse(orders.body)
+        let orders = JSON.parse(data.orders)
         let random = Math.floor(Math.random() * orders.length)
 
         let res = http.get(__ENV.HOST + config.api.orders + '/' + orders[random].id)
