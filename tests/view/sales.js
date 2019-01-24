@@ -40,7 +40,7 @@ export default function (data) {
                 "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/62.0.3183.0 Safari/537.36"
             }
         })
-        // console.log('ongoing sale: ' + sales[random].title + ' ' + sales[random].id)
+        console.log('View ongoing sale: ' + sales[random].title + ' ' + sales[random].id)
 
         let check = globalChecks(res, duration)
         ViewOngoingSaleFailRate.add(!check)
@@ -55,7 +55,7 @@ export default function (data) {
         let random = Math.floor(Math.random() * dates[0].sales.length)
 
         let res = http.get(__ENV.HOST + '/sales/upcoming/' + dates[0].sales[random].id)
-        // console.log('upcoming sale: ' + dates[0].sales[random].title + ' ' + dates[0].sales[random].id)
+        console.log('View upcoming sale: ' + dates[0].sales[random].title + ' ' + dates[0].sales[random].id)
 
         let check = globalChecks(res, duration)
         ViewUpcomingSaleFailRate.add(!check)

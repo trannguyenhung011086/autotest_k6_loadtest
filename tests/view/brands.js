@@ -72,13 +72,13 @@ export default function (data) {
             BrandNoProductFailRate.add(!check)
             BrandNoProductDuration.add(view.timings.duration)
             BrandNoProductReqs.add(1)
-            // console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
+            console.log('View brand: ' + res.body.name + ' ' + res.body.id + ' (no product)')
         } else {
             let check = globalChecks(view, duration)
             BrandWithProductFailRate.add(!check)
             BrandWithProductDuration.add(view.timings.duration)
             BrandWithProductReqs.add(1)
-            // console.log('brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')
+            console.log('View brand: ' + res.body.name + ' ' + res.body.id + ' (with products)')
         }
 
         sleep(1)
