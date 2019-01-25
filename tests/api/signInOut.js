@@ -25,7 +25,7 @@ export let options = {
 
 export default function () {
     let resSignIn = http.post(__ENV.HOST + config.api.signIn, {
-        "email": config.testAccount.email, "password": config.testAccount.password
+        "email": config.testAccount.email2, "password": config.testAccount.password2
     })
 
     let checkSignIn = globalChecks(resSignIn, duration)

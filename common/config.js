@@ -45,6 +45,8 @@ const config = {
     testAccount: {
         email: 'qa_tech@leflair.vn',
         password: 'leflairqa',
+        email2: 'test1234@mail.com',
+        password2: '123456789',
         facebook: 'trannguyenhung011086@protonmail.com',
         passwordFacebook: '0944226282',
         usedVoucher: 'VCB150'
