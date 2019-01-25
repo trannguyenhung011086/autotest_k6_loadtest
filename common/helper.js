@@ -3,7 +3,7 @@ import http from 'k6/http'
 
 export function getCookies() {
     let res = http.post(__ENV.HOST + config.api.signIn, {
-        "email": config.testAccount.email2, "password": config.testAccount.password
+        "email": config.testAccount.email, "password": config.testAccount.password
     })
 
     return JSON.stringify(res.cookies)

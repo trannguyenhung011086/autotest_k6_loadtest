@@ -43,9 +43,8 @@ const config = {
         subscriberNs: '/v1/subscriber-ns-cache-system-item-management'
     },
     testAccount: {
-        email: 'test1234@test.com',
-        email2: 'test1234@mail.com',
-        password: '123456789',
+        email: 'qa_tech@leflair.vn',
+        password: 'leflairqa',
         facebook: 'trannguyenhung011086@protonmail.com',
         passwordFacebook: '0944226282',
         usedVoucher: 'VCB150'
