@@ -37,9 +37,10 @@ export function setup() {
 
 export default function (data) {
     let product = JSON.parse(data.product)
+    let random = Math.floor(Math.random() * product.products.length)
 
     let addCart = http.post(__ENV.HOST + config.api.cart,
-        { "productId": product.products[0].id })
+        { "productId": product.products[random].id })
     let checkAdd = globalChecks(addCart, duration)
     AddCartFailRate.add(!checkAdd)
     AddCartDuration.add(addCart.timings.duration)
