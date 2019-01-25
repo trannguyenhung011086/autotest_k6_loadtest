@@ -44,6 +44,7 @@ const config = {
     },
     testAccount: {
         email: 'test1234@test.com',
+        email2: 'test1234@mail.com',
         password: '123456789',
         facebook: 'trannguyenhung011086@protonmail.com',
         passwordFacebook: '0944226282',

@@ -6,6 +6,12 @@ export function getCookies() {
         "email": config.testAccount.email, "password": config.testAccount.password
     })
 
+    if (res.status != 200) {
+        res = http.post(__ENV.HOST + config.api.signIn, {
+            "email": config.testAccount.email2, "password": config.testAccount.password
+        })
+    }
+
     return JSON.stringify(res.cookies)
 }
 
