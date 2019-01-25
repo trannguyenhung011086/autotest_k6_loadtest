@@ -33,6 +33,8 @@ export default function () {
     SignInDuration.add(resSignIn.timings.duration)
     SignInReqs.add(1)
 
+    sleep(1)
+
     let resSignOut = http.get(__ENV.HOST + config.api.signOut)
 
     let checkSignOut = globalChecks(resSignOut, duration)

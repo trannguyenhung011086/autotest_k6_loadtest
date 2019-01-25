@@ -46,6 +46,8 @@ export default function (data) {
     AddCartDuration.add(addCart.timings.duration)
     AddCartReqs.add(1)
 
+    sleep(1)
+
     let cart = JSON.parse(addCart.body)
 
     let updateCart = http.put(__ENV.HOST + config.api.cart + '/' + cart.id,
@@ -54,6 +56,8 @@ export default function (data) {
     UpdateCartFailRate.add(!checkUpdate)
     UpdateCartDuration.add(updateCart.timings.duration)
     UpdateCartReqs.add(1)
+
+    sleep(1)
 
     let removeCart = http.del(__ENV.HOST + config.api.cart + '/' + cart.id)
     let checkRemove = globalChecks(removeCart, duration)
