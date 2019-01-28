@@ -15,8 +15,8 @@ import CateMenuTest from './api/cateMenu.js'
 import { options as CateMenuOptions } from './api/cateMenu.js'
 import HomeTest from './api/home.js'
 import { options as HomeOptions } from './api/home.js'
-import OrdersTest from './api/orders.js'
-import { options as OrdersOptions } from './api/orders.js'
+// import OrdersTest from './api/orders.js'
+// import { options as OrdersOptions } from './api/orders.js'
 import ProductsTest from './api/products.js'
 import { options as ProductsOptions } from './api/products.js'
 import SalesTest from './api/sales.js'
@@ -32,7 +32,7 @@ import { options as VoucherOptions } from './api/voucher.js'
 
 export function setup() {
     let userCookies = helper.getCookies()
-    let userOrders = helper.getOrders()
+    // let userOrders = helper.getOrders()
     let brandList = helper.getBrandList()
     let productInfo = helper.getProduct()
     let saleInfo = helper.getSale()
@@ -40,7 +40,7 @@ export function setup() {
 
     return {
         cookies: userCookies,
-        orders: userOrders,
+        // orders: userOrders,
         brands: brandList,
         product: productInfo,
         sale: saleInfo,
@@ -56,7 +56,7 @@ Object.entries(BrandsOptions.thresholds).forEach(item => optionsSum[item[0]] = i
 Object.entries(CartOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(CateMenuOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(HomeOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
-Object.entries(OrdersOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
+// Object.entries(OrdersOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(ProductsOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(SalesOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(SignInOutOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
@@ -98,9 +98,9 @@ export default (data) => {
         HomeTest()
     })
 
-    group('Orders', () => {
-        OrdersTest(data)
-    })
+    // group('Orders', () => {
+    //     OrdersTest(data)
+    // })
 
     group('Products', () => {
         ProductsTest(data)
