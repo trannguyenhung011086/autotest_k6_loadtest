@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
@@ -37,7 +38,7 @@ export default function (data) {
     group('GET / Gift card - Check valid API', () => {
         let res = http.get(__ENV.HOST + config.api.giftcard + '4TZACVS')
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         ValidGiftCardFailRate.add(!check)
         ValidGiftCardDuration.add(res.timings.duration)
         ValidGiftCardReqs.add(1)
@@ -48,7 +49,7 @@ export default function (data) {
     group('GET / Gift card - Check invalid API', () => {
         let res = http.get(__ENV.HOST + config.api.giftcard + 'INVALID-ID')
 
-        let check = globalChecks(res, duration, 500)
+        let check = helper.globalChecks(res, duration, 500)
         InvalidGiftCardFailRate.add(!check)
         InvalidGiftCardDuration.add(res.timings.duration)
         InvalidGiftCardReqs.add(1)

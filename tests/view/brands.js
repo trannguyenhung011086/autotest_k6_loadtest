@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
@@ -43,7 +44,7 @@ export default function (data) {
             }
         })
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         BrandsFailRate.add(!check)
         BrandsDuration.add(res.timings.duration)
         BrandsReqs.add(1)
@@ -68,13 +69,13 @@ export default function (data) {
         })
 
         if (res.body.products.length == 0) {
-            let check = globalChecks(view, duration)
+            let check = helper.globalChecks(view, duration)
             BrandNoProductFailRate.add(!check)
             BrandNoProductDuration.add(view.timings.duration)
             BrandNoProductReqs.add(1)
             console.log('View brand: ' + res.body.name + res.body.id + ' (no product)')
         } else {
-            let check = globalChecks(view, duration)
+            let check = helper.globalChecks(view, duration)
             BrandWithProductFailRate.add(!check)
             BrandWithProductDuration.add(view.timings.duration)
             BrandWithProductReqs.add(1)

@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
@@ -30,7 +31,7 @@ export default function (data) {
     let res = http.get(__ENV.HOST + config.api.product + products[random].id)
     // console.log('product: ' + (JSON.parse(res.body)).title + ' ' + (JSON.parse(res.body)).id)
 
-    let check = globalChecks(res, duration)
+    let check = helper.globalChecks(res, duration)
     GetProductFailRate.add(!check)
     GetProductDuration.add(res.timings.duration)
     GetProductReqs.add(1)

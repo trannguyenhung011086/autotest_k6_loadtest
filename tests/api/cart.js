@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
@@ -41,7 +42,7 @@ export default function (data) {
 
     let addCart = http.post(__ENV.HOST + config.api.cart,
         { "productId": product.products[random].id })
-    let checkAdd = globalChecks(addCart, duration)
+    let checkAdd = helper.globalChecks(addCart, duration)
     AddCartFailRate.add(!checkAdd)
     AddCartDuration.add(addCart.timings.duration)
     AddCartReqs.add(1)
@@ -52,7 +53,7 @@ export default function (data) {
 
     let updateCart = http.put(__ENV.HOST + config.api.cart + '/' + cart.id,
         { "quantity": "2" })
-    let checkUpdate = globalChecks(updateCart, duration)
+    let checkUpdate = helper.globalChecks(updateCart, duration)
     UpdateCartFailRate.add(!checkUpdate)
     UpdateCartDuration.add(updateCart.timings.duration)
     UpdateCartReqs.add(1)
@@ -60,7 +61,7 @@ export default function (data) {
     sleep(1)
 
     let removeCart = http.del(__ENV.HOST + config.api.cart + '/' + cart.id)
-    let checkRemove = globalChecks(removeCart, duration)
+    let checkRemove = helper.globalChecks(removeCart, duration)
     RemoveCartFailRate.add(!checkRemove)
     RemoveCartDuration.add(removeCart.timings.duration)
     RemoveCartReqs.add(1)

@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
@@ -41,7 +42,7 @@ export default function (data) {
     group('GET / Order - Get all API', () => {
         let res = http.get(__ENV.HOST + config.api.orders)
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         GetOrdersFailRate.add(!check)
         GetOrdersDuration.add(res.timings.duration)
         GetOrdersReqs.add(1)
@@ -55,7 +56,7 @@ export default function (data) {
 
         let res = http.get(__ENV.HOST + config.api.orders + '/' + orders[random].id)
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         GetOrderFailRate.add(!check)
         GetOrderDuration.add(res.timings.duration)
         GetOrderReqs.add(1)

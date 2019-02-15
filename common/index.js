@@ -1,4 +1,4 @@
-import config from './config.js'
-import globalChecks from './globalChecks.js'
+import { config } from './config.js'
+import * as Helper from './helper.js'
 
-export { config, globalChecks }
+export { config, Helper }

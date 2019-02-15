@@ -1,3 +1,5 @@
+// import { config, Helper } from '../common/index.js'
+import { config } from '../common/config.js'
 import * as helper from '../common/helper.js'
 import { group, sleep } from 'k6'
 

@@ -1,4 +1,4 @@
-const config = {
+export const config = {
     api: {
         signUp: '/api/v2/account/signup',
         signIn: '/api/v2/account/signin',
@@ -52,5 +52,3 @@ const config = {
         usedVoucher: 'VCB150'
     }
 }
-
-export default config

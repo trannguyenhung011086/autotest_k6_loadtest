@@ -1,4 +1,6 @@
-import { globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
+import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -24,7 +26,7 @@ export default function () {
         }
     })
 
-    let check = globalChecks(res, duration)
+    let check = helper.globalChecks(res, duration)
     ViewHomeFailRate.add(!check)
     ViewHomeDuration.add(res.timings.duration)
     ViewHomeReqs.add(1)

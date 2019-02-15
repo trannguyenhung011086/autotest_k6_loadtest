@@ -1,8 +1,11 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
+import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
 import faker from 'cdnjs.com/libraries/Faker'
+
 
 export let SignUpDuration = new Trend('Sign up Duration')
 export let SignUpFailRate = new Rate('Sign up Fail Rate')
@@ -25,7 +28,7 @@ export default function () {
         "language": "vn", "gender": "M"
     })
 
-    let check = globalChecks(res, duration)
+    let check = helper.globalChecks(res, duration)
     SignUpFailRate.add(!check)
     SignUpDuration.add(res.timings.duration)
     SignUpReqs.add(1)

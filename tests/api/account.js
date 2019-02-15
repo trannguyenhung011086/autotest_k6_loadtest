@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
@@ -33,12 +34,13 @@ export function setup() {
 
 export default function (data) {
     let jar = http.cookieJar()
-    jar.set(__ENV.HOST, 'leflair.connect.sid', JSON.parse(data.cookies)['leflair.connect.sid'][0].value)
+    jar.set(__ENV.HOST, 'leflair.connect.sid',
+        JSON.parse(data.cookies)['leflair.connect2.sid'][0].value)
 
     group('GET / Account - Get info API', () => {
         let res = http.get(__ENV.HOST + config.api.account)
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         GetAccountFailRate.add(!check)
         GetAccountDuration.add(res.timings.duration)
         GetAccountReqs.add(1)
@@ -54,7 +56,7 @@ export default function (data) {
         let res = http.put(__ENV.HOST + config.api.account, body,
             { headers: { "Content-Type": "application/json" } })
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         UpdateAccountFailRate.add(!check)
         UpdateAccountDuration.add(res.timings.duration)
         UpdateAccountReqs.add(1)

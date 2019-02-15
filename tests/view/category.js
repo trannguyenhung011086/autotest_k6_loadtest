@@ -1,4 +1,6 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
+import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -89,27 +91,27 @@ export default function () {
     }
     let res = http.batch(requests)
 
-    let checkApparel = globalChecks(res['apparel'], duration)
+    let checkApparel = helper.globalChecks(res['apparel'], duration)
     ApparelFailRate.add(!checkApparel)
     ApparelDuration.add(res['apparel'].timings.duration)
     ApparelReqs.add(1)
 
-    let checkBags = globalChecks(res['bags'], duration)
+    let checkBags = helper.globalChecks(res['bags'], duration)
     BagsShoesFailRate.add(!checkBags)
     BagsShoesDuration.add(res['bags'].timings.duration)
     BagsShoesReqs.add(1)
 
-    let checkAccessories = globalChecks(res['accessories'], duration)
+    let checkAccessories = helper.globalChecks(res['accessories'], duration)
     AccessoriesFailRate.add(!checkAccessories)
     AccessoriesDuration.add(res['accessories'].timings.duration)
     AccessoriesReqs.add(1)
 
-    let checkHealth = globalChecks(res['health'], duration)
+    let checkHealth = helper.globalChecks(res['health'], duration)
     HealthBeautyFailRate.add(!checkHealth)
     HealthBeautyDuration.add(res['health'].timings.duration)
     HealthBeautyReqs.add(1)
 
-    let checkHome = globalChecks(res['home'], duration)
+    let checkHome = helper.globalChecks(res['home'], duration)
     HomeLifeStyleFailRate.add(!checkHome)
     HomeLifeStyleDuration.add(res['home'].timings.duration)
     HomeLifeStyleReqs.add(1)

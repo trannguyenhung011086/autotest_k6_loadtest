@@ -1,9 +1,18 @@
-import { config } from './index.js'
+import { config } from './config.js'
 import http from 'k6/http'
+import { check } from 'k6'
+
+export function globalChecks(res, duration, status = 200) {
+    return check(res, {
+        'status is correct': r => r.status == status,
+        // 'transaction time is less than threshold': r => r.timings.duration < duration
+    })
+}
 
 export function getCookies() {
     let res = http.post(__ENV.HOST + config.api.signIn, {
-        "email": config.testAccount.email, "password": config.testAccount.password
+        "email": config.testAccount.email,
+        "password": config.testAccount.password
     })
 
     return JSON.stringify(res.cookies)

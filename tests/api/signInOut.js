@@ -1,4 +1,6 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
+import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -28,7 +30,7 @@ export default function () {
         "email": config.testAccount.email2, "password": config.testAccount.password2
     })
 
-    let checkSignIn = globalChecks(resSignIn, duration)
+    let checkSignIn = helper.globalChecks(resSignIn, duration)
     SignInFailRate.add(!checkSignIn)
     SignInDuration.add(resSignIn.timings.duration)
     SignInReqs.add(1)
@@ -37,7 +39,7 @@ export default function () {
 
     let resSignOut = http.get(__ENV.HOST + config.api.signOut)
 
-    let checkSignOut = globalChecks(resSignOut, duration)
+    let checkSignOut = helper.globalChecks(resSignOut, duration)
     SignOutFailRate.add(!checkSignOut)
     SignOutDuration.add(resSignOut.timings.duration)
     SignOutReqs.add(1)

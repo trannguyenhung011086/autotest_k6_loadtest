@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
@@ -37,7 +38,7 @@ export default function (data) {
     group('GET / check valid voucher API', () => {
         let res = http.get(__ENV.HOST + config.api.voucher + 'ABBANK')
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         ValidVoucherFailRate.add(!check)
         ValidVoucherDuration.add(res.timings.duration)
         ValidVoucherReqs.add(1)
@@ -48,7 +49,7 @@ export default function (data) {
     group('GET / check invalid voucher API', () => {
         let res = http.get(__ENV.HOST + config.api.voucher + 'INVALID-ID')
 
-        let check = globalChecks(res, duration, 400)
+        let check = helper.globalChecks(res, duration, 400)
         InvalidVoucherFailRate.add(!check)
         InvalidVoucherDuration.add(res.timings.duration)
         InvalidVoucherReqs.add(1)

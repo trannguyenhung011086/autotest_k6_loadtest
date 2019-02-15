@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
@@ -58,7 +59,7 @@ export default function (data) {
     group('GET / Address - Get info API', () => {
         let res = http.get(__ENV.HOST + config.api.addresses)
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         GetAddressesFailRate.add(!check)
         GetAddressesDuration.add(res.timings.duration)
         GetAddressesReqs.add(1)
@@ -88,7 +89,7 @@ export default function (data) {
         let res = http.post(__ENV.HOST + config.api.addresses, body,
             { headers: { "Content-Type": "application/json" } })
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         AddAddressFailRate.add(!check)
         AddAddressDuration.add(res.timings.duration)
         AddAddressReqs.add(1)
@@ -122,7 +123,7 @@ export default function (data) {
         let res = http.put(__ENV.HOST + config.api.addresses + '/' + shipping[0].id,
             body, { headers: { "Content-Type": "application/json" } })
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         UpdateShippingFailRate.add(!check)
         UpdateShippingDuration.add(res.timings.duration)
         UpdateShippingReqs.add(1)
@@ -155,7 +156,7 @@ export default function (data) {
         let res = http.put(__ENV.HOST + config.api.addresses + '/' + billing[0].id,
             body, { headers: { "Content-Type": "application/json" } })
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         UpdateBillingFailRate.add(!check)
         UpdateBillingDuration.add(res.timings.duration)
         UpdateBillingReqs.add(1)
@@ -169,7 +170,7 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + shipping[0].id)
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         DeleteShippingFailRate.add(!check)
         DeleteShippingDuration.add(res.timings.duration)
         DeleteShippingReqs.add(1)
@@ -183,7 +184,7 @@ export default function (data) {
 
         let res = http.del(__ENV.HOST + config.api.addresses + '/' + billing[0].id)
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         DeleteBillingFailRate.add(!check)
         DeleteBillingDuration.add(res.timings.duration)
         DeleteBillingReqs.add(1)

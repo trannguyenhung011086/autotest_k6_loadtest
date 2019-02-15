@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
@@ -42,7 +43,7 @@ export default function (data) {
         })
         console.log('View ongoing sale: ' + sales[random].slug)
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         ViewOngoingSaleFailRate.add(!check)
         ViewOngoingSaleDuration.add(res.timings.duration)
         ViewOngoingSaleReqs.add(1)
@@ -57,7 +58,7 @@ export default function (data) {
         let res = http.get(__ENV.HOST + '/sales/upcoming/' + dates[0].sales[random].id)
         console.log('View upcoming sale: ' + dates[0].sales[random].slug)
 
-        let check = globalChecks(res, duration)
+        let check = helper.globalChecks(res, duration)
         ViewUpcomingSaleFailRate.add(!check)
         ViewUpcomingSaleDuration.add(res.timings.duration)
         ViewUpcomingSaleReqs.add(1)

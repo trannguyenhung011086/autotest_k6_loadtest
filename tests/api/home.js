@@ -1,4 +1,6 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
+import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep, group } from 'k6'
 import { Trend, Rate, Counter } from 'k6/metrics'
@@ -55,32 +57,32 @@ export default function () {
     }
     let res = http.batch(requests)
 
-    let checkToday = globalChecks(res['today'], duration)
+    let checkToday = helper.globalChecks(res['today'], duration)
     TodayFailRate.add(!checkToday)
     TodayDuration.add(res['today'].timings.duration)
     TodayReqs.add(1)
 
-    let checkCurrent = globalChecks(res['current'], duration)
+    let checkCurrent = helper.globalChecks(res['current'], duration)
     CurrentFailRate.add(!checkCurrent)
     CurrentDuration.add(res['current'].timings.duration)
     CurrentReqs.add(1)
 
-    let checkFeatured = globalChecks(res['featured'], duration)
+    let checkFeatured = helper.globalChecks(res['featured'], duration)
     FeaturedFailRate.add(!checkFeatured)
     FeaturedDuration.add(res['featured'].timings.duration)
     FeaturedReqs.add(1)
 
-    let checkInternational = globalChecks(res['international'], duration)
+    let checkInternational = helper.globalChecks(res['international'], duration)
     InternationalFailRate.add(!checkInternational)
     InternationalDuration.add(res['international'].timings.duration)
     InternationalReqs.add(1)
 
-    let checkPotd = globalChecks(res['potd'], duration)
+    let checkPotd = helper.globalChecks(res['potd'], duration)
     PotdFailRate.add(!checkPotd)
     PotdDuration.add(res['potd'].timings.duration)
     PotdReqs.add(1)
 
-    let checkUpcoming = globalChecks(res['upcoming'], duration)
+    let checkUpcoming = helper.globalChecks(res['upcoming'], duration)
     UpcomingFailRate.add(!checkUpcoming)
     UpcomingDuration.add(res['upcoming'].timings.duration)
     UpcomingReqs.add(1)

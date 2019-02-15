@@ -1,4 +1,5 @@
-import { config, globalChecks } from '../../common/index.js'
+// import { config, Helper } from '../../common/index.js'
+import { config } from '../../common/config.js'
 import * as helper from '../../common/helper.js'
 import http from 'k6/http'
 import { sleep } from 'k6'
@@ -34,7 +35,7 @@ export default function (data) {
     })
     console.log('View product: ' + products[random].slug)
 
-    let check = globalChecks(res, duration)
+    let check = helper.globalChecks(res, duration)
     ViewProductFailRate.add(!check)
     ViewProductDuration.add(res.timings.duration)
     ViewProductReqs.add(1)
