@@ -13,8 +13,6 @@ import BrandsTest from './api/brands.js'
 import { options as BrandsOptions } from './api/brands.js'
 import CartTest from './api/cart.js'
 import { options as CartOptions } from './api/cart.js'
-import CateMenuTest from './api/cateMenu.js'
-import { options as CateMenuOptions } from './api/cateMenu.js'
 import HomeTest from './api/home.js'
 import { options as HomeOptions } from './api/home.js'
 // import OrdersTest from './api/orders.js'
@@ -56,7 +54,6 @@ Object.entries(AccountOptions.thresholds).forEach(item => optionsSum[item[0]] = 
 Object.entries(BestSellersOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(BrandsOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(CartOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
-Object.entries(CateMenuOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(HomeOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 // Object.entries(OrdersOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
 Object.entries(ProductsOptions.thresholds).forEach(item => optionsSum[item[0]] = item[1])
@@ -90,10 +87,6 @@ export default (data) => {
 
     group('Cart', () => {
         CartTest(data)
-    })
-
-    group('Category menu', () => {
-        CateMenuTest()
     })
 
     group('Home', () => {
